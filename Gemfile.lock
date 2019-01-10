@@ -42,6 +42,8 @@ GEM
       sass (~> 3.4)
     jekyll-seo-tag (2.5.0)
       jekyll (~> 3.3)
+    jekyll-toc (0.9.1)
+      nokogiri (~> 1.8)
     jekyll-watch (2.1.2)
     jemoji (0.10.1)
       gemoji (~> 3.0)
@@ -86,6 +88,7 @@ PLATFORMS
 DEPENDENCIES
   jekyll (~> 3.8.5)
   jekyll-feed (~> 0.6)
+  jekyll-toc
   jemoji
   listen (~> 3.1)
   minima (~> 2.0)

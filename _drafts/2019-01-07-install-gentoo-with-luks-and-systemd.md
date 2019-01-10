@@ -1,10 +1,12 @@
 ---
-layout: post
+layout: post_toc
 title:  "How to install Gentoo with LUKS and systemd"
 date:   2019-01-07 20:36:44 +0100
+toc: true
 categories: [gentoo]
 tags: [gentoo,luks,systemd]
 ---
+## Introduction
 In this post I'll describe how to install [Gentoo](https://gentoo.org/) with _**systemd**_ stage3 tarball on _**LUKS**_ partition and _**LVM**_ volume group.
 
 This work is based on [Full Disk Encryption From Scratch Simplified](https://wiki.gentoo.org/wiki/Full_Disk_Encryption_From_Scratch_Simplified).
@@ -21,7 +23,7 @@ This is the oldest, and simple partition scheme used on this guide.
 ### Creating the Boot partition
 Using **fdisk** utility just create a new _primary_ partition. When prompted for the Last sector, type _**+700M**_ to create a partition of 700MiB in size:
 ```bash
-livecd ~ # fdisk /dev/sda
+livecd ~# fdisk /dev/sda
 
 Command (m for help): n
 Partition type
@@ -79,15 +81,43 @@ livecd ~#
 Create ext4 filesystem on first partition with only 1% of reserved space for super user.
 ```bash
 livecd ~# mkfs.ext4 -m1 /dev/sda1
-mke2fs 1.43.9 (8-Feb-2018)
-Discarding device blocks: done
-Creating filesystem with 179200 4k blocks and 44832 inodes
-Filesystem UUID: 4040cacf-092e-4221-b815-7ca15b4fb7e1
-Superblock backups stored on blocks:
-        32768, 98304, 163840
+```
+## Encrypt partition with LUKS
+Now we can crypt the second partition /dev/sda2 with LUKS
+```bash
+livecd ~# cryptsetup luksFormat -c aes-xts-plain64 -s 512 /dev/sda2
 
-Allocating group tables: done
-Writing inode tables: done
-Creating journal (4096 blocks): done
-Writing superblocks and filesystem accounting information: done
+WARNING!
+========
+This will overwrite data on /dev/sda2 irrevocably.
+
+Are you sure? (Type uppercase yes): YES
+Enter passphrase: 
+Verify passphrase: 
+livecd ~#
+```
+Open the LUKS device
+```bash
+livecd ~# cryptsetup luksOpen /dev/sda2 lvm
+Enter passphrase for /dev/sda2:
+livecd ~#
+```
+## Create LVM inside LUKS device
+Create the physical volume
+```bash
+livecd ~# pvcreate /dev/mapper/lvm
+```
+Create the volume group
+```bash
+livecd ~# vgcreate -s 16M amedeos-g-nexi /dev/mapper/lvm 
+```
+Create logical volumes
+```bash
+livecd ~# lvcreate -L 4G -n swap amedeos-g-nexi
+livecd ~# lvcreate -L 150G -n root amedeos-g-nexi
+```
+## Create root filesystem
+Format root filesystem as ext4 with only 1% of reserved space for super user.
+```bash
+livecd ~# mkfs.ext4 -m1 /dev/amedeos-g-nexi/root
 ```
