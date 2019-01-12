@@ -117,7 +117,60 @@ livecd ~# lvcreate -L 4G -n swap amedeos-g-nexi
 livecd ~# lvcreate -L 150G -n root amedeos-g-nexi
 ```
 ## Create root filesystem
-Format root filesystem as ext4 with only 1% of reserved space for super user.
+Format root filesystem as ext4 with only 1% of reserved space for super user and mount it.
 ```bash
 livecd ~# mkfs.ext4 -m1 /dev/amedeos-g-nexi/root
+livecd ~# mount /dev/amedeos-g-nexi/root /mnt/gentoo
+```
+
+## Create swap area
+Format swap logical volume as swap area and activate it.
+```bash
+livecd ~# mkswap /dev/amedeos-g-nexi/swap 
+livecd ~# swapon /dev/amedeos-g-nexi/swap 
+```
+
+## Gentoo installation
+Now it's time to get your hands dirty.
+### Install systemd stage3
+Download the systemd stage3 tarball from [Gentoo](https://gentoo.org/downloads/)
+```bash
+livecd ~# cd /mnt/gentoo/
+livecd /mnt/gentoo # wget http://distfiles.gentoo.org/releases/amd64/autobuilds/20181228/systemd/stage3-amd64-systemd-20181228.tar.bz2
+```
+Unarchive the tarball
+```bash
+livecd /mnt/gentoo # tar xpvf stage3-*.tar.bz2 --xattrs-include='*.*' --numeric-owner
+```
+### Configuring compile options
+Open /mnt/gentoo/etc/portage/make.conf file and configure the system with your preferred optimization variables. Have a look at [Gentoo Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD64/Full/Installation#Configuring_compile_options)
+```bash
+livecd /mnt/gentoo # vi /mnt/gentoo/etc/portage/make.conf
+```
+### Chrooting
+Copy DNS configurations
+```bash
+livecd /mnt/gentoo # cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
+```
+Mount proc, dev and shm filesystems
+```bash
+livecd /mnt/gentoo # mount -t proc /proc /mnt/gentoo/proc
+livecd /mnt/gentoo # mount --rbind /sys /mnt/gentoo/sys
+livecd /mnt/gentoo # mount --make-rslave /mnt/gentoo/sys
+livecd /mnt/gentoo # mount --rbind /dev /mnt/gentoo/dev
+livecd /mnt/gentoo # mount --make-rslave /mnt/gentoo/dev
+livecd /mnt/gentoo # test -L /dev/shm && rm /dev/shm && mkdir /dev/shm
+livecd /mnt/gentoo # mount -t tmpfs -o nosuid,nodev,noexec shm /dev/shm
+livecd /mnt/gentoo # chmod 1777 /dev/shm
+```
+chroot to /mnt/gentoo
+```bash
+livecd /mnt/gentoo # chroot /mnt/gentoo /bin/bash 
+livecd / # source /etc/profile
+livecd / # export PS1="(chroot) $PS1"
+(chroot) livecd / #
+```
+mount /boot filesystem
+```bash
+(chroot) livecd / # mount /dev/sda1 /boot
 ```
