@@ -1,6 +1,6 @@
 ---
 layout: post_toc
-title:  "How to install Gentoo with LUKS and systemd"
+title:  "How to install Gentoo with LUKS LVM and systemd"
 date:   2019-01-07 20:36:44 +0100
 toc: true
 categories: [gentoo]
@@ -147,6 +147,21 @@ Open /mnt/gentoo/etc/portage/make.conf file and configure the system with your p
 ```bash
 livecd /mnt/gentoo # vi /mnt/gentoo/etc/portage/make.conf
 ```
+For example below you can find my make.conf optimization variables
+```ini
+COMMON_FLAGS="-march=native -O2 -pipe"
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+FCFLAGS="${COMMON_FLAGS}"
+FFLAGS="${COMMON_FLAGS}"
+MAKEOPTS="-j5"
+GRUB_PLATFORMS="pc"
+CPU_FLAGS_X86="aes avx avx2 f16c fma3 mmx mmxext pclmul popcnt sse sse2 sse3 sse4_1 sse4_2 ssse3"
+USE="-gtk -gnome systemd networkmanager pulseaudio spice usbredir udisks offensive cryptsetup ocr bluetooth bash-completion"
+POLICY_TYPES="targeted"
+ACCEPT_KEYWORDS="~amd64"
+INPUT_DEVICES="libinput"
+```
 ### Chrooting
 Copy DNS configurations
 ```bash
@@ -170,7 +185,99 @@ livecd / # source /etc/profile
 livecd / # export PS1="(chroot) $PS1"
 (chroot) livecd / #
 ```
-mount /boot filesystem
+mounting the boot partition
 ```bash
 (chroot) livecd / # mount /dev/sda1 /boot
+```
+### Updating the Gentoo ebuild repository
+Update the Gentoo ebuild repository to the latest version.
+```bash
+(chroot) livecd ~# emerge --sync
+```
+#### Update portage
+If at the end of emerge sync you see a message like this:
+```console
+ * An update to portage is available. It is _highly_ recommended
+ * that you update portage now, before any other packages are updated.
+
+ * To update portage, run 'emerge --oneshot portage' now.
+```
+on this case run
+```bash
+(chroot) livecd ~# emerge --oneshot portage
+```
+### Choosing the right profile (with systemd)
+Choose one of the systemd available, for example for my system I have selected desktop/plasma/systemd
+```bash
+(chroot) livecd ~# eselect profile list
+...
+(chroot) livecd ~# eselect profile set 20
+(chroot) livecd ~# eselect profile list
+Available profile symlink targets:
+...
+[20]  default/linux/amd64/17.0/desktop/plasma/systemd (stable) *
+...
+```
+### Timezone
+Update the timezone, for example Europe/Rome
+```bash
+(chroot) livecd ~# echo Europe/Rome > /etc/timezone
+(chroot) livecd ~# emerge --config sys-libs/timezone-data
+```
+### Configure locales
+If you want only few locales on your system, for example C, en_us and it_IT
+```bash
+(chroot) livecd /etc # cat locale.gen 
+...
+en_US ISO-8859-1
+en_US.UTF-8 UTF-8
+it_IT ISO-8859-1
+it_IT.UTF-8 UTF-8
+
+(chroot) livecd /etc # locale-gen
+```
+now you can choose your preferred locale with
+```bash
+(chroot) livecd /etc # eselect locale list
+(chroot) livecd /etc # eselect locale set 1
+```
+reload the environment
+```bash
+(chroot) livecd /etc # env-update && source /etc/profile && export PS1="(chroot) $PS1"
+```
+### Updating the world
+If you change your profile, or if you change your USE flags run the update
+```bash
+(chroot) livecd ~# emerge --ask --verbose --update --deep --newuse @world
+```
+now you can take a coffee :coffee::coffee::coffee:
+### Optional - GCC Upgrade
+If you are in amd64 testing, most probably, updating the world, you have installed a new version of GCC, so from now we can use it
+```bash
+(chroot) livecd ~# gcc-config --list-profiles
+ [1] x86_64-pc-linux-gnu-7.3.0 *
+ [2] x86_64-pc-linux-gnu-8.2.0
+```
+set the default profile to 2, corresponding on the above example to the GCC 8.2
+```bash
+(chroot) livecd ~# gcc-config 2
+ * Switching native-compiler to x86_64-pc-linux-gnu-8.2.0 ...
+>>> Regenerating /etc/ld.so.cache...                                                                                                                                                                                                                                     [ ok ]
+
+ * If you intend to use the gcc from the new profile in an already
+ * running shell, please remember to do:
+
+ *   . /etc/profile
+
+(chroot) livecd ~# source /etc/profile
+livecd ~# export PS1="(chroot) $PS1"
+```
+after that re-emerge the libtool
+```bash
+(chroot) livecd ~# emerge --ask --oneshot --usepkg=n sys-devel/libtool
+```
+### Optional - Install vim
+If you hate nano editor like me, now you can install vim
+```bash
+(chroot) livecd ~# emerge --ask app-editors/vim
 ```
