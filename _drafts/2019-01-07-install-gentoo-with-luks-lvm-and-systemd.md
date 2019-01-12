@@ -281,3 +281,138 @@ If you hate nano editor like me, now you can install vim
 ```bash
 (chroot) livecd ~# emerge --ask app-editors/vim
 ```
+## Configure fstab
+This file contains the mount points of partitions to be mounted.
+Run blkid to see the UUIDs
+```bash
+(chroot) livecd ~# blkid 
+/dev/loop0: TYPE="squashfs"
+/dev/sda1: UUID="4040cacf-092e-4221-b815-7ca15b4fb7e1" TYPE="ext4" PARTUUID="fdddc7c0-01"
+/dev/sda2: UUID="3cb431e7-a6ff-458d-9f1f-f86dac11545b" TYPE="crypto_LUKS" PARTUUID="fdddc7c0-02"
+/dev/sdb1: UUID="2019-01-04-02-22-54-77" LABEL="Gentoo amd64 20190103T214502Z" TYPE="iso9660" PTUUID="26a11c8f" PTTYPE="dos" PARTUUID="26a11c8f-01"
+/dev/sdb2: SEC_TYPE="msdos" LABEL_FATBOOT="GENTOOLIVE" LABEL="GENTOOLIVE" UUID="37E9-562E" TYPE="vfat" PARTUUID="26a11c8f-02"
+/dev/mapper/lvm: UUID="p8UcJf-k9vk-esRW-JTIY-63Rz-4tSc-YjXyb4" TYPE="LVM2_member"
+/dev/mapper/amedeos--g--nexi-swap: UUID="e61a7777-d005-470f-9ab2-27c75b911a18" TYPE="swap"
+/dev/mapper/amedeos--g--nexi-root: UUID="a2fc60ea-1f7d-4abf-a991-21f7f0832098" TYPE="ext4"
+```
+copy the UUID for root filesystem -> upon LVM -> upon LUKS, (on the above example is a2fc60ea-1f7d-4abf-a991-21f7f0832098), and for the boot filesystem which resides on /dev/sda1 partition (on the above example is 4040cacf-092e-4221-b815-7ca15b4fb7e1).
+
+This is my fstab
+```bash
+(chroot) livecd ~ # cat /etc/fstab 
+# /etc/fstab: static file system information.
+
+UUID=4040cacf-092e-4221-b815-7ca15b4fb7e1       /boot   ext4    defaults        1 2
+UUID=a2fc60ea-1f7d-4abf-a991-21f7f0832098       /       ext4    defaults        1 1
+/dev/amedeos-g-nexi/swap   none            swap            sw              0 0
+# tmps
+tmpfs                                           /tmp            tmpfs           defaults,size=4G        0 0
+tmpfs                                           /run            tmpfs           size=100M       0 0
+# shm
+shm                                             /dev/shm        tmpfs           nodev,nosuid,noexec 0 0
+```
+## Installing the sources
+Install the kernel, genkernel-next and cryptsetup
+```bash
+(chroot) livecd ~# emerge --ask sys-kernel/gentoo-sources
+(chroot) livecd ~# emerge --ask sys-kernel/genkernel-next
+(chroot) livecd ~# emerge --ask sys-fs/cryptsetup
+```
+### Optional - Installing firmware
+Some drivers require additional firmware, if you use some of those you need to install the firmware packages
+```bash
+(chroot) livecd ~# emerge --ask sys-kernel/firmware
+```
+### Optional - Installing intel microcode
+If you have an intel cpu and you want to upgrade the microcode you could install the intel-microcode package.
+```bash
+(chroot) livecd ~# mkdir -p /etc/portage/package.use
+(chroot) livecd ~# echo "sys-firmware/intel-microcode initramfs" > /etc/portage/package.use/intel-microcode
+(chroot) livecd ~# emerge --ask sys-firmware/intel-microcode
+```
+### Configure genkernel.conf
+Configure genkernel for systemd, LUKS and LVM
+```bash
+(chroot) livecd ~# cd /etc/
+(chroot) livecd /etc # cp -p genkernel.conf genkernel.conf.ORIG
+```
+```bash
+(chroot) livecd /etc # vim genkernel.conf
+...
+MAKEOPTS="$(portageq envvar MAKEOPTS)"
+...
+LVM="yes"
+...
+LUKS="yes"
+...
+UDEV="yes"
+...
+```
+### Run genkernel
+Configure your kernel with the preferred options and then
+```bash
+(chroot) livecd ~# time genkernel --luks --lvm  all
+```
+## Install and configure grub
+### Install grub
+Configure grub to use device-mapper and standard "pc" platform
+```bash
+(chroot) livecd ~# mkdir -p /etc/portage/package.use
+(chroot) livecd ~# echo "sys-boot/grub device-mapper" > /etc/portage/package.use/grub
+(chroot) livecd ~# echo 'GRUB_PLATFORMS="pc"' >> /etc/portage/make.conf
+```
+emerge grub
+```bash
+(chroot) livecd ~# emerge --ask sys-boot/grub
+```
+### Install grub on MBR
+just run grub-install
+```bash
+(chroot) livecd ~# grub-install --target=i386-pc /dev/sda
+```
+### Configure grub
+if you run grub-mkconfig, it hangs because it doesn't has /run filesystem and os-probe will loop indefinitely; so we can exit from chroot env and mount /run filesystem
+```bash
+(chroot) livecd ~# exit
+livecd ~# mount --rbind /run /mnt/gentoo/run 
+livecd ~# mount --make-rslave /mnt/gentoo/run 
+livecd ~ # cd /mnt/gentoo/
+livecd /mnt/gentoo # chroot /mnt/gentoo /bin/bash 
+livecd / # source /etc/profile
+livecd / # export PS1="(chroot) $PS1"
+(chroot) livecd / # 
+```
+edit /etc/default/grub
+```bash
+(chroot) livecd /# cd /etc/default/
+(chroot) livecd /etc/default # cp grub grub.ORIG
+(chroot) livecd /etc/default # vim grub
+```
+and most important configure GRUB_CMDLINE_LINUX with 
+```bash
+GRUB_CMDLINE_LINUX="init=/usr/lib/systemd/systemd dolvm crypt_root=UUID=3cb431e7-a6ff-458d-9f1f-f86dac11545b root=/dev/mapper/amedeos--g--nexi-root"
+```
+where
+
+| **parameter** | **description** |
+| init | set init to systemd -> /usr/lib/systemd/systemd |
+| dolvm | tell init to use lvm |
+| crypt_root | put here the UUID (from blkid) of the second partition /dev/sda2 |
+| root | put the logical volume which contains root filesystem |
+
+finally we can run grub-mkconfig
+```bash
+(chroot) livecd /etc/default # cd
+(chroot) livecd ~# grub-mkconfig -o /boot/grub/grub.cfg
+```
+## Set the root password
+Remember to set the root password
+```bash
+(chroot) livecd ~# passwd
+```
+## Rebooting the system
+Exit the chrooted environment and reboot
+```bash
+(chroot) livecd ~ # exit
+livecd /mnt/gentoo # shutdown -r now
+```
