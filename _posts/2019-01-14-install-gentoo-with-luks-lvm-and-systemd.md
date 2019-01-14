@@ -1,7 +1,7 @@
 ---
 layout: post_toc
 title:  "How to install Gentoo with LUKS LVM and systemd"
-date:   2019-01-07 20:36:44 +0100
+date:   2019-01-14 04:15:00 +0100
 toc: true
 categories: [gentoo]
 tags: [gentoo,luks,systemd]
