@@ -1,5 +1,5 @@
 ---
-layout: post_toc
+layout: post
 title:  "How to install Gentoo with LUKS LVM and systemd"
 date:   2019-01-14 04:15:00 +0100
 toc: true
