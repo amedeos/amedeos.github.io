@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Configure Gentoo with Signed Kernel module"
-date:   2019-01-16 21:15:00 +0100
+date:   2019-01-17 21:15:00 +0100
 categories: [gentoo]
 tags: [gentoo]
 ---
@@ -17,7 +17,18 @@ Enable Module signature verification, Require modules to be validly signed and A
       Which hash algorithm should modules be signed with? (Sign modules with SHA-512)  --->
 [ ]   Compress modules on installation
 ```
-## Build 
+## Configure genkernel to delete the key
+Create the postgen.d directory
+```bash
+# mkdir -p /etc/kernels/postgen.d
+```
+then, inside the postgen.d directory create the file 10-remove-certs.sh
+```bash
+# cd /etc/kernels/postgen.d/
+# touch 10-remove-certs.sh
+# chmod 0754 10-remove-certs.sh
+```
+now open the file 10-remove-certs.sh with your preferred editor and put this content
 ```sh
 #!/usr/bin/env bash
 #
@@ -28,7 +39,20 @@ SHRED=`which shred`
 
 for f in $FILES
 do
-        echo "Remove ${KERNEL_SOURCE}/${CERT_DIR}/${f}"
-        $SHRED -f -u ${KERNEL_SOURCE}/${CERT_DIR}/${f}
+    if [ -f ${KERNEL_SOURCE}/${CERT_DIR}/${f} ]; then
+            echo "Remove ${KERNEL_SOURCE}/${CERT_DIR}/${f}"
+            $SHRED -f -u ${KERNEL_SOURCE}/${CERT_DIR}/${f}
+    fi
 done
+```
+## Building the kernel
+Now we can run genkernel to build the new kernel
+```bash
+# genkernel --luks --lvm all
+```
+## Configure grub and reboot
+Finally, we can configure grub to use the new installed kernel and then reboot
+```bash
+# grub-mkconfig -o /boot/grub/grub.cfg
+# shutdown -r now
 ```
