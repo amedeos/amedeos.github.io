@@ -1,0 +1,52 @@
+--- /usr/share/genkernel/defaults/initrd.d/00-crypt.sh	2018-11-25 10:08:53.000000000 +0100
++++ scripts/00-crypt-amedeos.sh	2019-01-20 20:05:21.140187055 +0100
+@@ -23,15 +23,43 @@
+     local tty_cmd="${3}" # command for use without plymouth
+     local do_ask="${4}"  # whether we need a passphrase at all
+ 
++    #nitrokey
++    NITROLUKS_BIN="/bin/nitro_luks"
++
+     if [ "${CRYPT_SILENT}" = "1" -o "${do_ask}" = "0" ]; then
+         eval ${tty_cmd} >/dev/null 2>/dev/null
+     else
+-        ask_for_password --ply-tries 5 \
+-            --ply-cmd "${ply_cmd}" \
+-            --ply-prompt "Encryption password (${luks_dev}): " \
+-            --tty-tries 5 \
+-            --tty-cmd "${tty_cmd}" || return 1
+-        return 0
++        local nitropass="$(mktemp -t "nitropass.XXXXXX")"
++        $NITROLUKS_BIN > $nitropass
++        local retnitro="${?}"
++
++        if [ "${retnitro}" = "0" ]; then
++            echo "Nitrokey pro opened"
++            cat ${nitropass} | ${CRYPTSETUP_BIN} luksOpen ${luks_dev} ${luks_dev_name}
++            local retnitrocryptsetup="${?}"
++            if [ "${retnitrocryptsetup}" = "0" ]; then
++                rm -f $nitropass
++                return 0
++            else
++                echo "error on nitrokey cryptsetup"
++                rm -f $nitropass
++                ask_for_password --ply-tries 5 \
++                    --ply-cmd "${ply_cmd}" \
++                    --ply-prompt "Encryption password (${luks_dev}): " \
++                    --tty-tries 5 \
++                    --tty-cmd "${tty_cmd}" || return 1
++                return 0
++            fi
++        else
++            echo "error on nitrokey"
++            rm -f $nitropass
++            ask_for_password --ply-tries 5 \
++                --ply-cmd "${ply_cmd}" \
++                --ply-prompt "Encryption password (${luks_dev}): " \
++                --tty-tries 5 \
++                --tty-cmd "${tty_cmd}" || return 1
++            return 0
++        fi
+     fi
+ }
+ 
