@@ -1,14 +1,14 @@
 ---
 layout: post
 title:  "Configure Gentoo to use Nitrokey Pro to unlock LUKS root partition"
-date:   2019-01-20 17:15:00 +0100
+date:   2019-01-21 21:45:00 +0100
 categories: [gentoo,nitrokey]
 tags: [gentoo,luks,nitrokey]
 ---
 ## Introduction
-In this post I'll show you hot to unlock LUKS disk (with root partition / file system) using the [Nitrokey Pro 2](https://www.nitrokey.com/) Password Safe.
+In this post I'll show you how to unlock LUKS disk (with root partition / file system) using the [Nitrokey Pro 2](https://www.nitrokey.com/) Password Safe.
 ## Warning
-This guide is only tested on my Gentoo box, so __SO BE CAREFUL, YOU CAN MAKE YOUR GENTOO UNBOOTABLE.__
+This guide is only tested on my Gentoo box, __SO BE CAREFUL, YOU CAN MAKE YOUR GENTOO UNBOOTABLE.__
 ## Install nitrokey application
 First install nitro-app
 ```bash
@@ -18,7 +18,7 @@ now, configure the Nitrokey Pro 2 following the [official documentation](https:/
 ![Nitrokey app](/images/nitrokeyapp-luks-slot.png)
 Copy the password, because we need to add it to LUKS
 ## Add new passphrase to LUKS
-Just add the new passphrase to LUKS, for me the LUKS partition is /dev/sda2, but verify on your system
+Just add the new passphrase to LUKS (copied from Nitrokey App), for me the LUKS partition is /dev/sda2, but verify on your system
 ```bash
 # cryptsetup luksAddKey /dev/sdaX
 Enter any existing passphrase:     <-- insert the current passphrase
@@ -62,7 +62,7 @@ Key Slot 6: DISABLED
 Key Slot 7: DISABLED
 ```
 ## Configure initramfs to use nitroluks
-We'll use the C source code kept from [Nitroluks](https://github.com/artosan/nitroluks), who is a simple iterator from Nitrokey Pro 2 Password Safe slots, simple but very useful.
+We'll use the C++ source code kept from [Nitroluks](https://github.com/artosan/nitroluks), who is a simple iterator from Nitrokey Pro 2 Password Safe slots, simple but very useful.
 ### Configure genkernel-next to inject an overlay
 Edit /etc/genkernel.conf with the following parameter
 ```ini
