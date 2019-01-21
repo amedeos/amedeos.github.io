@@ -8,22 +8,21 @@ CRYPT_PATCH="https://raw.githubusercontent.com/amedeos/amedeos.github.io/master/
 GENKERNEL_DIR="/usr/share/genkernel/defaults/initrd.d"
 CRYPT_FILE="00-crypt.sh"
 GIT_BIN=`which git`
-TEMPDIR="/tmp"
 GPLUS_BIN=`which g++`
 CURL_BIN=`which curl`
 #TODO: insert return codes and check them after every commands
 
 # copy libnitrokey
-cp /usr/lib64/libnitrokey.so* /etc/kernels/nitro/usr/lib64/
+cp /usr/lib64/libnitrokey.so* ${INITRAMFS_OVERLAY}/usr/lib64/
 # copy libhidapi-libusb and libusb
-cp /usr/lib64/libhidapi-libusb.so.0* /etc/kernels/nitro/usr/lib64/
-cp /lib64/libusb-1.0.so.0* /etc/kernels/nitro/lib64/
+cp /usr/lib64/libhidapi-libusb.so.0* ${INITRAMFS_OVERLAY}/usr/lib64/
+cp /lib64/libusb-1.0.so.0* ${INITRAMFS_OVERLAY}/lib64/
 
-NITROBUILD=$(mktemp -d ${TEMPDIR}/nitrobuild.XXXXX)
+NITROBUILD=$(mktemp -t -d nitrobuild.XXXXX)
 ${GIT_BIN} clone ${NITROLUKS} ${NITROBUILD}
 mkdir -p ${NITROBUILD}/build
 ${GPLUS_BIN} ${NITROBUILD}/src/nitro_luks.c -o ${NITROBUILD}/build/nitro_luks -L${NITROBUILD}/build/ -l:libnitrokey.so.3 -Wall
-cp ${NITROBUILD}/build/nitro_luks /etc/kernels/nitro/bin/
+cp ${NITROBUILD}/build/nitro_luks ${INITRAMFS_OVERLAY}/bin/
 ${CURL_BIN} --output ${NITROBUILD}/00-crypt.sh.patch ${CRYPT_PATCH}
 cp ${GENKERNEL_DIR}/${CRYPT_FILE} ${NITROBUILD}/${CRYPT_FILE}
 patch ${NITROBUILD}/${CRYPT_FILE} ${NITROBUILD}/00-crypt.sh.patch
