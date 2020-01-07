@@ -91,5 +91,14 @@ Finally, if you want to raise the cpu governor to ___performance___ if your syst
 If you want to automatic start ___changegovernor.py___ at boot, and you are using systemd simply copy the unit file and enable it:
 ```bash
 $ sudo cp changegovernor.service /etc/systemd/system/
+$ sudo systemctl daemon-reload
 $ sudo systemctl enable changegovernor.service
+```
+## Gentoo installation
+If you're running gentoo you could add my [amedeos-overlay](https://github.com/amedeos/amedeos-overlay/) and then install with emerge the sys-power/changegovernor ebuild:
+```bash
+$ sudo -i
+# EPYTHON=python3.6 layman -o https://raw.githubusercontent.com/amedeos/amedeos-overlay/master/overlay.xml -f -a amedeos
+# emerge sys-power/changegovernor
+# systemctl enable changegovernor.service --now
 ```
