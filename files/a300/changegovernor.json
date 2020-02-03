@@ -1,0 +1,162 @@
+{
+    "processes": [
+        {
+            "name": "emerge",
+            "state": "absent",
+            "extra_commands": [],
+            "governor": "performance"
+        },
+        {
+            "name": "gcc",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "performance"
+        },
+        {
+            "name": "cc1plus",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "performance"
+        },
+        {
+            "name": "cc1",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "performance"
+        },
+        {
+            "name": "rustc",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "performance"
+        },
+        {
+            "name": "steam",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "performance"
+        },
+        {
+            "name": "sleep",
+            "state": "absent",
+            "extra_commands": ["hostname", "echo zoticone"],
+            "governor": "performance"
+        },
+        {
+            "name": "DEFAULTS",
+            "state": "present",
+            "extra_commands": [
+                "echo 30000 > /sys/class/hwmon/hwmon0/pwm2_auto_point1_temp",
+                "echo 65 > /sys/class/hwmon/hwmon0/pwm2_auto_point1_pwm",
+                "echo 40000 > /sys/class/hwmon/hwmon0/pwm2_auto_point2_temp",
+                "echo 110 > /sys/class/hwmon/hwmon0/pwm2_auto_point2_pwm",
+                "echo 50000 > /sys/class/hwmon/hwmon0/pwm2_auto_point3_temp",
+                "echo 150 > /sys/class/hwmon/hwmon0/pwm2_auto_point3_pwm",
+                "echo 60000 > /sys/class/hwmon/hwmon0/pwm2_auto_point4_temp",
+                "echo 210 > /sys/class/hwmon/hwmon0/pwm2_auto_point4_pwm",
+                "echo 64000 > /sys/class/hwmon/hwmon0/pwm2_auto_point5_temp",
+                "echo 255 > /sys/class/hwmon/hwmon0/pwm2_auto_point5_pwm"
+	    ]
+        }
+    ],
+    "sensors": [
+        {
+            "name": "k10temp",
+            "state": "present",
+            "label": "Tdie",
+            "percent_from_critical": "7.0",
+            "extra_commands": [],
+            "governor": "powersave"
+        },
+        {
+            "name": "amdgpu",
+            "state": "present",
+            "label": "edge",
+            "percent_from_critical": "5.0",
+            "extra_commands": [],
+            "governor": "powersave"
+        }
+    ],
+    "percentages": [
+        {
+            "name": "zero",
+            "min": "0",
+            "max": "9.9",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "powersave"
+        },
+        {
+            "name": "ten",
+            "min": "10",
+            "max": "19.9",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "powersave"
+        },
+        {
+            "name": "twenty",
+            "min": "20",
+            "max": "29.9",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "powersave"
+        },
+        {
+            "name": "thirty",
+            "min": "30",
+            "max": "39.9",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "powersave"
+        },
+        {
+            "name": "forty",
+            "min": "40",
+            "max": "49.9",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "powersave"
+        },
+        {
+            "name": "fifty",
+            "min": "50",
+            "max": "59.9",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "powersave"
+        },
+        {
+            "name": "sixty",
+            "min": "60",
+            "max": "69.9",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "powersave"
+        },
+        {
+            "name": "seventy",
+            "min": "70",
+            "max": "79.9",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "performance"
+        },
+        {
+            "name": "eigthy",
+            "min": "80",
+            "max": "89.9",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "performance"
+        },
+        {
+            "name": "ninety",
+            "min": "90",
+            "max": "100",
+            "state": "present",
+            "extra_commands": [],
+            "governor": "performance"
+        }
+    ]
+}
