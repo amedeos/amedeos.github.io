@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Configure kernel 5.6+ SATA drive temperature for HWMON"
-date:   2020-04-01 10:00:00 +0100
+date:   2020-04-01 10:00:00 +0200
 categories: [hardware,performance]
 tags: [hardware,performance]
 ---
