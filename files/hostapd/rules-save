@@ -41,7 +41,6 @@ COMMIT
 -A INPUT -i wlp4s0f3u2 -j wifi-incoming-clients
 -A INPUT -i wlp2s0 -j wifi-incoming-guests
 -A INPUT -s 192.168.79.0/24 -d 192.168.1.80/32 -j service-incoming
--A INPUT -s 192.168.1.70/32 -d 192.168.1.80/32 -j service-incoming
 -A INPUT -j REJECT --reject-with icmp-port-unreachable
 -A FORWARD -i wlp2s0 -j wifi-filter-guests
 -A FORWARD -i wlp4s0f3u2 -j wifi-filter-clients
@@ -50,7 +49,6 @@ COMMIT
 -A FORWARD -i wlp2s0 -o enp3s0 -j ACCEPT
 -A FORWARD -i wlp4s0f3u2 -o wlp2s0 -j ACCEPT
 -A FORWARD -i wlp4s0f3u2 -o tun0 -j ACCEPT
--A service-incoming -s 192.168.1.70/32 -i enp3s0 -p tcp -m multiport --dports 22,9091 -j ACCEPT
 -A service-incoming -s 192.168.79.0/24 -p tcp -m multiport --dports 22,9091 -j ACCEPT
 -A wifi-filter-guests -d 8.8.8.8/32 -j REJECT --reject-with icmp-port-unreachable
 -A wifi-filter-guests -d 8.8.4.4/32 -j REJECT --reject-with icmp-port-unreachable
