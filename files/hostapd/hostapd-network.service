@@ -1,0 +1,9 @@
+[Unit]
+Description=Setup network for hostapd
+After=network-online.target nss-lookup.target
+
+[Service]
+ExecStart=/usr/local/sbin/setup-network.sh
+
+[Install]
+WantedBy=multi-user.target
