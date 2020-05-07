@@ -1,0 +1,13 @@
+[Unit]
+Description=Hostapd IEEE 802.11 AP for guests
+After=hostapd-network.service
+
+[Service]
+ExecStart=/usr/sbin/hostapd /etc/hostapd/hostapd-wifiguests.conf
+CPUSchedulingPolicy=fifo
+#CPUSchedulingPriority=40
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
