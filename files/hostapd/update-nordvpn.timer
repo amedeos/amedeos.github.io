@@ -1,0 +1,9 @@
+[Unit]
+Description=Run update-nordvpn 10 minutes after the boot
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=1d 
+
+[Install]
+WantedBy=timers.target

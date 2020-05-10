@@ -1,0 +1,9 @@
+[Unit]
+Description=Update nordvpn DB and configure with the desired country
+
+[Service]
+Type=oneshot
+#ExecStart=/usr/sbin/update-nordvpn.sh "United States"
+ExecStart=-/bin/ip route add 192.168.79.0/24 dev wlp4s0f3u2 table wifiguests
+ExecStart=-/bin/ip route add 192.168.69.0/24 dev wlp2s0 table wifiguests
+ExecStart=/usr/sbin/update-nordvpn.sh Italy
