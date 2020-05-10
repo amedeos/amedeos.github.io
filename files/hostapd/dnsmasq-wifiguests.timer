@@ -1,0 +1,8 @@
+[Unit]
+Description=Run dnsmasq-wifiguests 3 minutes after the boot
+
+[Timer]
+OnBootSec=3min
+
+[Install]
+WantedBy=timers.target

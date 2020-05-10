@@ -1,0 +1,8 @@
+[Unit]
+Description=Run dnsmasq-wifi 2 minutes after the boot
+
+[Timer]
+OnBootSec=2min
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=A lightweight DHCP and caching DNS server for wireless interface
+After=hostapd-wifi.service
+
+[Service]
+Type=simple
+ExecStartPre=/usr/sbin/dnsmasq --test --conf-file=/etc/dnsmasq-wifi.conf
+ExecStart=/usr/sbin/dnsmasq --conf-file=/etc/dnsmasq-wifi.conf -k --user=dnsmasq --group=dnsmasq --pid-file=/var/run/dnsmasq-wifi.pid
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
