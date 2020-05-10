@@ -1,8 +1,8 @@
 [Unit]
-Description=Run hostapd-network 2 minutes after the boot
+Description=Run hostapd-network 1 minutes after the boot
 
 [Timer]
-OnBootSec=2min
+OnBootSec=1min
 
 [Install]
 WantedBy=timers.target

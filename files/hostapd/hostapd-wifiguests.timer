@@ -1,8 +1,8 @@
 [Unit]
-Description=Run hostapd-wifiguests 4 minutes after the boot
+Description=Run hostapd-wifiguests 3 minutes after the boot
 
 [Timer]
-OnBootSec=4min
+OnBootSec=3min
 
 [Install]
 WantedBy=timers.target

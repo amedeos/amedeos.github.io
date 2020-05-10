@@ -1,8 +1,8 @@
 [Unit]
-Description=Run hostapd-wifi 3 minutes after the boot
+Description=Run hostapd-wifi 2 minutes after the boot
 
 [Timer]
-OnBootSec=3min
+OnBootSec=2min
 
 [Install]
 WantedBy=timers.target
