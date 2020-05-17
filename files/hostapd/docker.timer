@@ -1,0 +1,8 @@
+[Unit]
+Description=Run docker 3.5 minutes after the boot
+
+[Timer]
+OnBootSec=210seconds
+
+[Install]
+WantedBy=timers.target
