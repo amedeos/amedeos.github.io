@@ -551,10 +551,10 @@ ExecStart=/usr/sbin/update-nordvpn.sh Italy
 
 # cat /etc/systemd/system/update-nordvpn.timer
 [Unit]
-Description=Run update-nordvpn 10 minutes after the boot
+Description=Run update-nordvpn 4 minutes after the boot
 
 [Timer]
-OnBootSec=10min
+OnBootSec=4min
 OnUnitActiveSec=1d
 
 [Install]
