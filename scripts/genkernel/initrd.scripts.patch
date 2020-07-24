@@ -1,0 +1,40 @@
+--- /usr/share/genkernel/defaults/initrd.scripts	2020-07-24 20:07:59.699995917 +0200
++++ initrd.scripts	2020-07-24 23:14:51.451141523 +0200
+@@ -1950,9 +1950,34 @@
+ 						cryptsetup_options="${cryptsetup_options} -d ${mntkey}${LUKS_KEY}"
+ 					fi
+ 				fi
+-				# At this point, keyfile or not, we're ready!
+-				crypt_filter "${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
+-				crypt_filter_ret=$?
++
++				# nitrokey
++				NITROLUKS_BIN="/bin/nitro_luks"
++				local nitropass="$(mktemp -t "nitropass.XXXXXX")"
++				$NITROLUKS_BIN > $nitropass
++				local retnitro="${?}"
++
++				if [ "${retnitro}" = "0" ]; then
++					echo "Nitrokey pro opened"
++					crypt_filter "cat ${nitropass} | ${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
++					crypt_filter_ret=$?
++					if [ "${crypt_filter_ret}" = "0" ]; then
++						rm -f $nitropass
++					else
++						echo "error on nitrokey cryptsetup"
++						rm -f $nitropass
++						# At this point, keyfile or not, we're ready!
++						crypt_filter "${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
++						crypt_filter_ret=$?
++					fi
++				else
++					echo "error on nitrokey"
++					rm -f $nitropass
++					# At this point, keyfile or not, we're ready!
++					crypt_filter "${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
++					crypt_filter_ret=$?
++				fi # end if [ "${retnitro}" = "0" ]
++
+ 
+ 				[ -e /dev/tty.org ] \
+ 					&& run rm -f /dev/tty \
