@@ -5,6 +5,13 @@ date:   2019-01-21 21:45:00 +0100
 categories: [gentoo,nitrokey]
 tags: [gentoo,luks,nitrokey]
 ---
+## DEPRECATED
+This guide was based on **genkernel-next**, which in July 2020 were masked in the portage, for this reason I switched my system to **genkernel** and I have written this updated guide:
+
+[Configure Gentoo to use Nitrokey Pro to unlock LUKS root partition, using genkernel](https://amedeos.github.io/gentoo/nitrokey/2020/07/26/gentoo-nitrokey-luks.html)
+
+**Please, follow the above link if you want to configure your Gentoo's initramfs to unlock LUKS partition with root file system.**
+
 ## Introduction
 In this post I'll show you how to unlock LUKS disk (with root partition / file system) using the [Nitrokey Pro 2](https://www.nitrokey.com/) Password Safe.
 ## Warning
