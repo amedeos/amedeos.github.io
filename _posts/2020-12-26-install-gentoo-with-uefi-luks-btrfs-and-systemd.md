@@ -482,3 +482,70 @@ Exit the chrooted environment and reboot:
 (chroot) livecd ~# exit
 livecd /mnt/gentoo # shutdown -r now
 ```
+
+## Optional: Add swap subvolume and swapfile
+If you want to add a swapfile, inside your Btrfs filesystem, after the first reboot, check at first, the LUKS device mapper created by your initramfs, if you're using genkernel this device mapper is called **root**:
+
+```bash
+~# blkid | grep Gentoo
+/dev/mapper/root: LABEL="Gentoo" UUID="a000eea9-d97c-4107-ae39-602049a6acaa" UUID_SUB="d45b2afd-7250-4ba1-a896-b0e81a20fa4b" BLOCK_SIZE="4096" TYPE="btrfs"
+```
+now mount it under /mnt/gentoo directory:
+```bash
+~# mkdir -p /mnt/gentoo
+~# mount /dev/mapper/root /mnt/gentoo
+```
+create the **@swap** subvolume:
+```bash
+~# btrfs subvolume create /mnt/gentoo/@swap
+Create subvolume '/mnt/gentoo/@swap'
+```
+create the swapfile, in my case 4G of swapfile, but you can adapt it as your needs:
+```bash
+~# truncate -s 0 /mnt/gentoo/@swap/swapfile
+```
+disable the copy on write and Btrfs compression:
+```bash
+~# chattr +C /mnt/gentoo/@swap/swapfile
+
+~# btrfs property set /mnt/gentoo/@swap/swapfile compression none
+```
+and create the 4G swapfile:
+```bash
+~# fallocate -l 4G /mnt/gentoo/@swap/swapfile
+
+~# chmod 0600 /mnt/gentoo/@swap/swapfile
+
+~# mkswap /mnt/gentoo/@swap/swapfile
+Setting up swapspace version 1, size = 4 GiB (4294963200 bytes)
+```
+create the mountpoint **/.swap**:
+```bash
+~# mkdir /.swap
+```
+and add two rows in the fstab, one for the **@swap** subvolume, and the second one for the swapfile **/.swap/swapfile**
+```bash
+~# cd /etc
+
+/etc# cat fstab
+# /etc/fstab: static file system information.
+UUID=1D97-3854                                  /boot                           vfat            noatime                                                                         0 1
+UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /                               btrfs           noatime,relatime,compress=lzo,ssd,space_cache,discard=async,subvol=@            0 0
+UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /home                           btrfs           noatime,relatime,compress=lzo,ssd,space_cache,discard=async,subvol=@home        0 0
+UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /.snapshots                     btrfs           noatime,relatime,compress=lzo,ssd,space_cache,discard=async,subvol=@snapshots   0 0
+UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /.swap                          btrfs           noatime,relatime,compress=no,ssd,space_cache,discard=async,subvol=@swap         0 0
+/.swap/swapfile                                 none                            swap            sw                                                                              0 0
+# tmps
+tmpfs                                           /tmp                            tmpfs           defaults,size=4G                                                                0 0
+tmpfs                                           /run                            tmpfs           size=100M                                                                       0 0
+# shm
+shm                                             /dev/shm                        tmpfs           nodev,nosuid,noexec                                                             0 0
+```
+remember to set **compress=no** to speeding up the swapfile and set **discard=async** only if have a kernel > 5.6.
+
+Final umount /mnt/gentoo and reboot:
+
+```bash
+~# umount /mnt/gentoo
+~# reboot
+```
