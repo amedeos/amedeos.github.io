@@ -95,7 +95,6 @@ GEM
 PLATFORMS
   ruby
   x86_64-linux
-  x86_64-linux-musl
 
 DEPENDENCIES
   jekyll (~> 3.9.0)
