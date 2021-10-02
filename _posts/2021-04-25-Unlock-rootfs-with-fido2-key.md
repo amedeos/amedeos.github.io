@@ -26,16 +26,20 @@ sys-apps/systemd-248
 + **sys-kernel/dracut** will be used for building the initial ram file system.
 
 ## Software installation
-### dev-libs/libfido2
-First of all install dev-libs/libfido2:
-```bash
-# emerge --ask dev-libs/libfido2
-```
 ### sys-apps/systemd
-After installing libfido2 you will need to rebuild systemd in order to have FIDO2 capability:
+Recently, Gentoo systemd mantainer has added fido2 support, just add fido2 USE flag:
+
 ```bash
-# emerge -1v --ask sys-apps/systemd
+# mkdir -p /etc/portage/package.use
+# echo "sys-apps/systemd fido2" >> /etc/portage/package.use/systemd
 ```
+
+after enabling fido2 USE flag re-emerge systemd:
+
+```bash
+# time emerge --ask --verbose --update --deep --with-bdeps=y --newuse  --keep-going --autounmask-write=y --backtrack=30  @world
+```
+
 check if your systemd has FIDO2 capability:
 ```bash
 # systemctl --version | grep FIDO | sed -E 's/.+([+-]FIDO2).+/\1/'
