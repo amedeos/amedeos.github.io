@@ -11,6 +11,7 @@ In this guide I'll show you how to unlock in initramfs, build with new **genkern
 I've just written an [older guide](https://amedeos.github.io/gentoo/nitrokey/2019/01/21/gentoo-nitrokey-luks.html) about this, but that guide was based on the **genkernel-next**, which is recently masked in the portage, so this one will be based on **~amd64 genkernel**.
 ## Warning
 This guide is only tested on my Gentoo box, __SO BE CAREFUL, YOU CAN MAKE YOUR GENTOO UNBOOTABLE.__
+__Update 25/11/2021:__ The latest version of sys-kernel/genkernel (into ~amd64 => sys-kernel/genkernel-4.2.6-r1)removed the shared libraries, if you update the genkernel update also the script __20-nitrokey.sh__ (below you can find the updated version)
 ## Install nitrokey application
 First install nitrokey-app
 ```bash
@@ -101,6 +102,7 @@ GIT_BIN=$(which git)
 GPLUS_BIN=$(which g++)
 CURL_BIN=$(which curl)
 LDD_BIN=$(which ldd)
+LD_LINUX=$(whereis ld-linux-x86-64.so.2 | awk '{print $2}')
 #TODO: insert return codes and check them after every commands
 
 NITROBUILD=$(mktemp -t -d nitrobuild.XXXXX)
@@ -110,10 +112,13 @@ ${GPLUS_BIN} ${NITROBUILD}/src/nitro_luks.c -o ${NITROBUILD}/build/nitro_luks -L
 cp ${NITROBUILD}/build/nitro_luks ${INITRAMFS_OVERLAY}/bin/
 
 for f in $(ldd ${NITROBUILD}/build/nitro_luks | egrep "=>" |awk '{print $3}'); do
-	echo "Copy shared libraries $f"
-	mkdir -p "${INITRAMFS_OVERLAY}/$(dirname $f)"
-	cp --dereference ${f}* ${INITRAMFS_OVERLAY}/$(dirname $f)/
+        echo "Copy shared libraries $f"
+        mkdir -p "${INITRAMFS_OVERLAY}/$(dirname $f)"
+        cp --dereference ${f}* ${INITRAMFS_OVERLAY}/$(dirname $f)/
 done
+
+cp --dereference ${LD_LINUX} ${INITRAMFS_OVERLAY}/lib/
+cp --dereference -a /etc/ld.so.conf.d ${INITRAMFS_OVERLAY}/etc/
 
 ${CURL_BIN} --output ${NITROBUILD}/initrd.scripts.patch ${INITRD_PATCH}
 cp ${GENKERNEL_DIR}/${CRYPT_FILE} ${NITROBUILD}/${CRYPT_FILE}
