@@ -12,7 +12,7 @@ I've just written an [older guide](https://amedeos.github.io/gentoo/nitrokey/201
 ## Warning
 This guide is only tested on my Gentoo box, __SO BE CAREFUL, YOU CAN MAKE YOUR GENTOO UNBOOTABLE.__
 ## Update 25/11/2021
-The latest version of sys-kernel/genkernel (into ~amd64 => sys-kernel/genkernel-4.2.6-r1)removed the shared libraries, if you update the genkernel update also the script __20-nitrokey.sh__ (below you can find the updated version)
+The latest version of sys-kernel/genkernel (into ~amd64 => sys-kernel/genkernel-4.2.6-r1) removed shared libraries, if you update genkernel update also the script __20-nitrokey.sh__ (below you can find the updated version)
 ## Install nitrokey application
 First install nitrokey-app
 ```bash
