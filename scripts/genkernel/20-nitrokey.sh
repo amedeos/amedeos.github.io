@@ -11,6 +11,7 @@ GIT_BIN=$(which git)
 GPLUS_BIN=$(which g++)
 CURL_BIN=$(which curl)
 LDD_BIN=$(which ldd)
+LD_LINUX=$(whereis ld-linux-x86-64.so.2 | awk '{print $2}')
 #TODO: insert return codes and check them after every commands
 
 NITROBUILD=$(mktemp -t -d nitrobuild.XXXXX)
@@ -24,6 +25,9 @@ for f in $(ldd ${NITROBUILD}/build/nitro_luks | egrep "=>" |awk '{print $3}'); d
 	mkdir -p "${INITRAMFS_OVERLAY}/$(dirname $f)"
 	cp --dereference ${f}* ${INITRAMFS_OVERLAY}/$(dirname $f)/
 done
+
+cp --dereference ${LD_LINUX} ${INITRAMFS_OVERLAY}/lib/
+cp --dereference -a /etc/ld.so.conf.d ${INITRAMFS_OVERLAY}/etc/
 
 ${CURL_BIN} --output ${NITROBUILD}/initrd.scripts.patch ${INITRD_PATCH}
 cp ${GENKERNEL_DIR}/${CRYPT_FILE} ${NITROBUILD}/${CRYPT_FILE}
