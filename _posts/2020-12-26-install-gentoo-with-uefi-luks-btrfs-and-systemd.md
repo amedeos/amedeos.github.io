@@ -155,6 +155,12 @@ and finally we can mount our root filesystem based on @ subvolume:
 ```bash
 livecd ~#  mount -t btrfs -o noatime,relatime,compress=lzo,ssd,space_cache,subvol=@ /dev/mapper/luksdev /mnt/gentoo
 ```
+
+**WARNING**: if you have a recent kernel, for example 5.19 space_cache option must be **space_cache=v2**:
+```bash
+livecd ~#  mount -t btrfs -o noatime,relatime,compress=lzo,ssd,space_cache=v2,subvol=@ /dev/mapper/luksdev /mnt/gentoo
+```
+
 ## Gentoo installation
 Now it's time to get your hands dirty.
 ### Install systemd stage3
@@ -247,9 +253,9 @@ and then mount **/home** and **/.snapshots** subvolumes:
 ```bash
 (chroot) livecd / # mkdir /.snapshots
 
-(chroot) livecd / # mount -t btrfs -o noatime,relatime,compress=lzo,ssd,space_cache,subvol=@snapshots /dev/mapper/luksdev /.snapshots
+(chroot) livecd / # mount -t btrfs -o noatime,relatime,compress=lzo,ssd,subvol=@snapshots /dev/mapper/luksdev /.snapshots
 
-(chroot) livecd / # mount -t btrfs -o noatime,relatime,compress=lzo,ssd,space_cache,subvol=@home /dev/mapper/luksdev /home
+(chroot) livecd / # mount -t btrfs -o noatime,relatime,compress=lzo,ssd,subvol=@home /dev/mapper/luksdev /home
 ```
 
 ### Updating the Gentoo ebuild repository
@@ -372,9 +378,9 @@ This is my fstab
 (chroot) livecd /etc # cat fstab
 # /etc/fstab: static file system information.
 UUID=1D97-3854                                  /boot                           vfat            noatime                                                                         0 1
-UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /                               btrfs           noatime,relatime,compress=lzo,ssd,space_cache,discard=async,subvol=@            0 0
-UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /home                           btrfs           noatime,relatime,compress=lzo,ssd,space_cache,discard=async,subvol=@home        0 0
-UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /.snapshots                     btrfs           noatime,relatime,compress=lzo,ssd,space_cache,discard=async,subvol=@snapshots   0 0
+UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /                               btrfs           noatime,relatime,compress=lzo,ssd,discard=async,subvol=@            0 0
+UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /home                           btrfs           noatime,relatime,compress=lzo,ssd,discard=async,subvol=@home        0 0
+UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /.snapshots                     btrfs           noatime,relatime,compress=lzo,ssd,discard=async,subvol=@snapshots   0 0
 # tmps
 tmpfs                                           /tmp                            tmpfs           defaults,size=4G                                                                0 0
 tmpfs                                           /run                            tmpfs           size=100M                                                                       0 0
@@ -530,10 +536,10 @@ and add two rows in the fstab, one for the **@swap** subvolume, and the second o
 /etc# cat fstab
 # /etc/fstab: static file system information.
 UUID=1D97-3854                                  /boot                           vfat            noatime                                                                         0 1
-UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /                               btrfs           noatime,relatime,compress=lzo,ssd,space_cache,discard=async,subvol=@            0 0
-UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /home                           btrfs           noatime,relatime,compress=lzo,ssd,space_cache,discard=async,subvol=@home        0 0
-UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /.snapshots                     btrfs           noatime,relatime,compress=lzo,ssd,space_cache,discard=async,subvol=@snapshots   0 0
-UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /.swap                          btrfs           noatime,relatime,compress=no,ssd,space_cache,discard=async,subvol=@swap         0 0
+UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /                               btrfs           noatime,relatime,compress=lzo,ssd,discard=async,subvol=@            0 0
+UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /home                           btrfs           noatime,relatime,compress=lzo,ssd,discard=async,subvol=@home        0 0
+UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /.snapshots                     btrfs           noatime,relatime,compress=lzo,ssd,discard=async,subvol=@snapshots   0 0
+UUID=a000eea9-d97c-4107-ae39-602049a6acaa       /.swap                          btrfs           noatime,relatime,compress=no,ssd,discard=async,subvol=@swap         0 0
 /.swap/swapfile                                 none                            swap            sw                                                                              0 0
 # tmps
 tmpfs                                           /tmp                            tmpfs           defaults,size=4G                                                                0 0
