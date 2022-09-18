@@ -10,6 +10,9 @@ tags: [OpenShift,ipi]
 
 In this article, I'll explain how to deploy Red Hat OpenShift Container Platform using the [installer-provisioned cluster on bare metal](https://docs.openshift.com/container-platform/4.11/installing/installing_bare_metal_ipi/ipi-install-overview.html) (IPI), but instead of using bare metal nodes, for my homelab I use nested virtualization simulating bare metal nodes.
 
+## Update 18-09-2022
+Now, with the use of **redfish** emulator sushy-tools, by default, only one **baremetal** network should be used, with the advantage of removing the **provisioning** network.
+
 ## Introduction
 I use [Ansible playbooks](https://github.com/amedeos/ocp4-in-the-jars) to install **OpenShift Container Platform 4.x** on a couple of (similar) Intel NUC, to test IPI bare metal installation; but instead of using bare metal nodes, I use virtual machines on NUC hosts.
 
@@ -34,14 +37,13 @@ In the following example, only one host is used. For example, you can rent a ded
 Requirements
 ------------
 ### Networks
-If you want to run on only one host all virtual machines, you can skip this task, otherwise, if you want to use multiple NUC hosts, you need to setup your switch with two networks, provisioning and baremetal, where the provisioning network needs to be a native VLAN. This is required if you use a trunked network/cable.
+If you want to run on only one host all virtual machines, you can skip this task, otherwise, if you want to use multiple NUC hosts, you need to setup your switch with one baremetal network, where baremetal network could be a native VLAN or tagged by your NUC Linux bridge, . This is required if you use a trunked network/cable.
 
 The default configuration will use these L2 and L3 settings:
 
 | VLAN | Name | Subnet | Native | Bridge | Gateway |
 | ---- | ---- | ------ | ------ | ------ | ------- |
-| 2001 | Provisioning | 192.168.201.0/24 | True | br0 | 192.168.201.1 |
-| 2003 | Baremetal | 192.168.203.0/24 | | br-2003 | 192.168.203.1 |
+| 2003 | Baremetal | 192.168.203.0/24 | | bm | 192.168.203.1 |
 
 ### Operating System and packages
 Your Linux NUC hosts require the following **packages** installed and working:
@@ -50,7 +52,7 @@ Your Linux NUC hosts require the following **packages** installed and working:
 - qemu
 - nested virtualization
 - libguestfs
-- virtualbmc
+- sushy-tools
 - ssh
 
 there is no constraint on which Linux distribution to use. For example, I use Gentoo, but you can use RHEL 8, CentOS Stream 8, Ubuntu, Arch...
@@ -63,12 +65,12 @@ $ git clone https://github.com/amedeos/ocp4-in-the-jars
 $ cd ocp4-in-the-jars
 ```
 
-- Create an Ansible inventory host for **kvmhost** group, for example, the content could be something like this:
+- Create an Ansible inventory host for **kvmhost** group, where for each host you have to specify a single, free **baremetal_ip**, the content could be something like this:
 ```bash
 $ cat hosts-kvmhost 
 [kvmhost]
-centos01 ansible_ssh_user=root ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
-centos02 ansible_ssh_user=root ansible_ssh_host=192.168.201.10 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+centos01 baremetal_ip=192.168.203.3 ansible_ssh_user=root ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+centos02 baremetal_ip=192.168.203.4 ansible_ssh_user=root ansible_ssh_host=192.168.201.10 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 ```
 
 - create a **custom-variables.yaml** file:
@@ -76,20 +78,11 @@ centos02 ansible_ssh_user=root ansible_ssh_host=192.168.201.10 ansible_ssh_commo
 $ touch custom-variables.yaml
 ```
 
-- review provisioning and baremetal networks in `variables.yaml` file, where, if you're running all VMs on only one host you can leave as is, otherwise adapt to your trunked network and set new values into **custom-variables.yaml**; in the following example, I've changed bridge names, networks CIDR and MTU:
+- review baremetal network in `variables.yaml` file, where, if you're running all VMs on only one host you can leave as is, otherwise adapt to your trunked network and set new values into **custom-variables.yaml**; in the following example, I've changed bridge names, networks CIDR and MTU:
 ```bash
 $ vi custom-variables.yaml
-bridge_prov: provisioning
+bridge_prov: br0
 bridge_bm: baremetal
-provision_net:
-    net: 192.168.245.0
-    netmask: 255.255.255.0
-    prefix: 24
-    net_interface: enp1s0
-    dhcp_start: 192.168.245.140
-    dhcp_end: 192.168.245.160
-    bridge_prov_ip: 192.168.245.1
-    mtu: 3400
 baremetal_net:
     net: 192.168.243.0
     netmask: 255.255.255.0
@@ -103,19 +96,20 @@ baremetal_net:
     vlan: 2003
 ```
 
-- review **kvmhost** variables, where, if you're running all VMs on only one host, you can leave as is, otherwise adapt to your needs, setting new values into **custom-variables.yaml** file; for example if you need to configure your multiple NUC bridges with your correct L2+L3 settings change **provisioning_bridge_isolated** and **baremetal_bridge_isolated** variables from True to **False**:
+- review **kvmhost** variables, where, if you're running all VMs on only one host, you can leave as is, otherwise adapt to your needs, setting new values into **custom-variables.yaml** file; for example if you need to configure your multiple NUC bridges with your correct L2+L3 settings change **provisioning_bridge_isolated** and **baremetal_bridge_isolated** variables from True to **False**, instead if you want that your NUC act as baremetal network default gateway change **enable_baremetal_gw** from True to **False**:
 ```bash
 $ vi custom-variables.yaml
 kvmhost:
     enable_selinux: True
     reboot_timeout: 1200
     enable_portfw: True
-    replace_ssh_key: True
     replace_ddns_duckdns: False
     provisioning_bridge_create: True
     provisioning_bridge_isolated: False
     baremetal_bridge_create: True
     baremetal_bridge_isolated: False
+    enable_baremetal_gw: False
+    set_hostname: True
 ```
 
 - run **prepare-hypervisor.yaml** playbook:
@@ -194,7 +188,7 @@ $ scp rhel-8.6-x86_64-kvm.qcow2 <NUC HOST>:/root/images/rhel-8.6-x86_64-kvm.qcow
 Edit Ansible inventory
 -------------------
 
-If you're installing all VMs in only one host / hypervisor / NUC, skip this chapter, otherwise if you want to balance your VMs across multiple hosts, hypervisors, NUCs, you need to specify how many workers you want and on which KVM host / NUC system, every virtual machines (utility, bastion, masters and workers) will be created; for doing this you need to create a **custom-bm-ansible-nodes.json** file where you can specify hypervisor (NUC), ipmi IP and port and MAC addresses.
+If you're installing all VMs in only one host / hypervisor / NUC, skip this chapter, otherwise if you want to balance your VMs across multiple hosts, hypervisors, NUCs, you need to specify how many workers you want and on which KVM host / NUC system, every virtual machines (utility, bastion, masters and workers) will be created; for doing this you need to create a **custom-bm-ansible-nodes.json** file where you can specify hypervisor (NUC), **redfish** IP and port and MAC addresses, where redfish ip usually is the baremetal_ip defined on hosts-kvmhost inventory file.
 
 - copy from all in one file **bm-ansible-nodes.json**:
 ```bash
@@ -223,6 +217,8 @@ where, for example, if you want to run **master-0** node (VM), on hypervisor cen
             "vbmc_pre_cmd": "",
             "vbmc_ip": "192.168.201.102",
             "vbmc_port": "623",
+            "redfish_ip": "192.168.203.1",
+            "redfish_port": "8000",
             "baremetal_ip": "192.168.203.53",
             "baremetal_last": "53"
         },
@@ -251,9 +247,9 @@ Connect to your bastion virtual machine:
 ```bash
 $ ssh kni@<BASTIONIP>
 
-# if you haven't changed IP this should be 192.168.201.50
+# if you haven't changed IP this should be 192.168.203.50
 
-$ ssh kni@192.168.201.50
+$ ssh kni@192.168.203.50
 ```
 
 check clusterversion:
