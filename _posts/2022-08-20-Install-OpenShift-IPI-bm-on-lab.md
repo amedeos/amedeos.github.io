@@ -110,6 +110,8 @@ kvmhost:
     baremetal_bridge_isolated: False
     enable_baremetal_gw: False
     set_hostname: True
+    set_hosts: True
+    additional_hosts: personal_hosts.j2
 ```
 
 - run **prepare-hypervisor.yaml** playbook:
