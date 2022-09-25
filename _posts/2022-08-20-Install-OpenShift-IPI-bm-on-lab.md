@@ -112,6 +112,7 @@ kvmhost:
     set_hostname: True
     set_hosts: True
     additional_hosts: personal_hosts.j2
+    create_ssh_key: True
 ```
 
 - run **prepare-hypervisor.yaml** playbook:
