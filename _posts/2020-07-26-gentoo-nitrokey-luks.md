@@ -11,6 +11,8 @@ In this guide I'll show you how to unlock in initramfs, build with new **genkern
 I've just written an [older guide](https://amedeos.github.io/gentoo/nitrokey/2019/01/21/gentoo-nitrokey-luks.html) about this, but that guide was based on the **genkernel-next**, which is recently masked in the portage, so this one will be based on **~amd64 genkernel**.
 ## Warning
 This guide is only tested on my Gentoo box, __SO BE CAREFUL, YOU CAN MAKE YOUR GENTOO UNBOOTABLE.__
+## Update 20/11/2022
+Patch file [initrd.scripts.patch](https://amedeos.github.io/scripts/genkernel/initrd.scripts.patch) has been updated for latest sys-kernel/genkernel-4.3.1.
 ## Update 25/11/2021
 The latest version of sys-kernel/genkernel (into ~amd64 => sys-kernel/genkernel-4.2.6-r1) removed shared libraries, if you update genkernel update also the script __20-nitrokey.sh__ (below you can find the updated version)
 ## Install nitrokey application
