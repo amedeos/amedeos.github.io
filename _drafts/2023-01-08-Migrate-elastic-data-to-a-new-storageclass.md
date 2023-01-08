@@ -6,23 +6,22 @@ toc: true
 categories: [OpenShift]
 tags: [OpenShift,elasticsearch,elk]
 ---
-In this **OpenShift** / **Kubernetes** article, I'll explain how to migrate your **Elasticsearch** data (shards), residing on one cloud storage class, for example Azure managed-premium, to another storage class, for example Azure **managed-csi**, this will be a "rolling" migration, with no service and data interruption.
+In this **OpenShift** / **Kubernetes** article, I'll show you how to migrate your **Elasticsearch** data (shards), from one cloud StorageClass, such as Azure managed-premium, to another cloud StorageClass, such as Azure **managed-csi**, this will be a "rolling" migration, with no service and data disruption.
 
-**Warning:** If you are a Red Hat customer, open a support case before going forward, otherwise doing the following steps at your own risk!
+**Warning:** If you are a Red Hat customer, open a support case before going forward; otherwise do the following steps at your own risk!
 
 ## Requirements
 Before starting you'll need:
 
-- installed and working Elasticsearch[0];
+- Elasticsearch is installed and operational[0];
 - configured new / destination Storage Class => in this article I'll use **managed-csi**;
-- Elasticsearch working on 3 different worker nodes (usually belonging to 3 Availability Zones);
-- Elasticsearch working on 3 different CDM, where each of them has its own PVC on __old__ StorageClass (in my case Azure managed-premium)[1];
-- Elasticsearch configured with minimum_master_nodes set to 2;
-- in this guide I'll move data / disks, only from 3 OSD disks to other 3 OSD disks, in different storage classes, if you have more than 3 OSD you have to redo this procedure from start to finish.
+- Elasticsearch running on three different worker nodes (typically from three different availability zones);
+- Elasticsearch is currently working on three different CDMs, each with its own PVC on an old StorageClass (in my case, Azure managed-premium) [1];
+- Elasticsearch is configured with minimum_master_nodes set to 2;
 
-[0] In this guide I'll assume your Elasticsearch is installed on the hyperscaler cloud provider, for example Azure or AWS, with 3 availability zones
+[0] In this guide, I'll assume you've installed Elasticsearch on a hyperscale cloud provider, such as Azure or AWS, with three availability zones.
 
-[1] Example of 3 elasticsearch CDM running on OpenShift:
+[1] Three elasticsearch CDMs running on OpenShift as examples:
 ```bash
 $ oc get pods -l component=elasticsearch -o wide -n openshift-logging
 NAME                                            READY   STATUS    RESTARTS   AGE   IP            NODE                                          NOMINATED NODE   READINESS GATES
@@ -53,10 +52,10 @@ epoch      timestamp cluster       status node.total node.data shards pri relo i
 1661176875 14:01:15  elasticsearch green           3         3    428 214    0    0        0             0                  -                100.0%
 ```
 
-**WARNING:** if your cluster is not in **green**, and **active_shards_percent** is not equal to 100%, stop any activities and check first elasticsearch state!
+**WARNING:** if your cluster is not in **green**, and **active_shards_percent** is not equal to 100%, stop any activities and check the elasticsearch state first!
 
 ## Check cluster routing allocation parameter
-The cluster.routing.allocation.enable parameter must to be "all", for example, if you have "primaries", you need to change it to "all" and wait for shards creation / relocation.
+The cluster.routing.allocation.enable parameter must be "all", for example, if you have "primaries", you need to change it to "all" and wait for shards creation / relocation.
 
 This is the correct value:
 ```bash
@@ -102,7 +101,7 @@ $ oc exec ${ELKCDM} -c elasticsearch -- es_util --query=_cluster/settings?pretty
 }
 ```
 
-in this case you have to overwrite to all:
+in this case, you have to overwrite to all:
 ```bash
 $ oc exec -c elasticsearch ${ELKCDM} -- curl -s --key /etc/elasticsearch/secret/admin-key --cert /etc/elasticsearch/secret/admin-cert --cacert /etc/elasticsearch/secret/admin-ca -H "Content-Type: application/json" -XPUT "https://localhost:9200/_cluster/settings" -d '{ "persistent":{ "cluster.routing.allocation.enable" : "all" }}'
 {"acknowledged":true,"persistent":{"cluster":{"routing":{"allocation":{"enable":"all"}}}},"transient":{}}
@@ -126,7 +125,7 @@ $ oc exec ${ELKCDM} -c elasticsearch -- es_util --query=_cluster/settings?pretty
   "transient" : { }
 }
 ```
-then wait until relocation (relo column) falls to zero (0)
+then wait until the relocation column (relo column) reaches zero (0)
 ```bash
 $ while true ; do oc exec ${ELKCDM} -c elasticsearch -- health | egrep 'green\s+3\s+3|' ; sleep 10 ; done
 epoch      timestamp cluster       status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
@@ -141,10 +140,10 @@ $  oc exec ${ELKCDM} -c elasticsearch -- es_util --query=_cat/shards?v | grep -v
 index                          shard prirep state      docs   store ip          node
 ```
 
-**Warning:** the above command must return only one line which is the column header; if you have some shards that is NOT in STARTED state, stop any activities and check first elasticsearch state!
+**Warning:** the above command must return only one line, which is the column header; if you have some shards that are NOT in STARTED state, stop any activities and check first the elasticsearch state!
 
-## Modify clusterlogging instance with new StorageClass
-Edit you clusterlogging instance with your new StorageClass name (in my case managed-csi).
+## Replace the StorageClass in the clusterlogging instance
+Edit your clusterlogging instance with your new StorageClass name (in my case, managed-csi).
 
 Backup it before editing:
 ```bash
@@ -152,20 +151,19 @@ $ oc get clusterlogging instance -oyaml | tee -a clusterlogging-instance-before-
 ```
 
 then edit it changing only the storageClassName parameter:
-#TODO: put a snippet
 ```bash
 $ oc edit clusterlogging instance
 clusterlogging.logging.openshift.io/instance edited
 ```
 
-verify the correct storageClassName value:
+check for proper storageClassName value:
 ```bash
 $ oc get clusterlogging instance -ojson | jq -r '.spec.logStore.elasticsearch.storage.storageClassName'
 managed-csi
 ```
 
 ## Remove shards from one elastic CDM pod
-Now, you can identify one elastic CDM and its overlay IP, in order to relocate all shards from it:
+Now, you can identify one elastic CDM and its overlay IP in order to relocate all shards from it:
 ```bash
 $  oc exec ${ELKCDM} -c elasticsearch -- es_util --query=_cat/nodes?v
 ip          heap.percent ram.percent cpu load_1m load_5m load_15m node.role master name
@@ -174,10 +172,10 @@ ip          heap.percent ram.percent cpu load_1m load_5m load_15m node.role mast
 100.65.10.8           24          99  18    2.21    2.63     3.30 mdi       -      elasticsearch-cdm-19ibb0br-3
 ```
 
-In this example I'll relocate shards from CDM-1 **elasticsearch-cdm-19ibb0br-1**, which has **100.65.8.8** IP
+In this example, I'll move shards from CDM-1 **elasticsearch-cdm-19ibb0br-1**, which has the IP address **100.65.8.8**
 
 ### Exclude CDM IP
-In order to move shards from idenfied elasticsearch cdm, you have to eclude its IP, in my case 100.65.8.8, but you need to change with your CDM' IP:
+To move shards from an identified elasticsearch CDM, you must exclude its IP, in my case 100.65.8.8, but you must change the IP of your CDM:
 ```bash
 $  oc exec ${ELKCDM} -c elasticsearch -- es_util --query=_cluster/settings?pretty -X PUT -d '{"transient":{"cluster.routing.allocation.exclude._ip": "100.65.8.8"}}'
 {
@@ -197,7 +195,7 @@ $  oc exec ${ELKCDM} -c elasticsearch -- es_util --query=_cluster/settings?prett
 }
 ```
 
-wait until all shards are relocated to other two elasticsearch nodes:
+wait until all shards are relocated to the other two elasticsearch nodes:
 ```bash
 $ oc rsh ${ELKCDM} 
 Defaulted container "elasticsearch" out of: elasticsearch, proxy
@@ -251,7 +249,7 @@ epoch      timestamp cluster       status node.total node.data shards pri relo i
 1661258957 12:49:17  elasticsearch green           2         2    416 208    0    0        0             0                  -                100.0%
 ```
 
-**WARNING:** if your cluster is not in **green**, and **active_shards_percent** is not equal to 100%, stop any activities and check first elasticsearch state!
+**WARNING:** if your cluster is not in **green**, and **active_shards_percent** is not equal to 100%, stop any activities and check the elasticsearch state first!
 
 ### Remove exclude IP
 Remove your previously exclude ip parameter:
@@ -265,7 +263,7 @@ $ oc exec ${ELKCDM} -c elasticsearch -- es_util --query=_cluster/settings?pretty
 ```
 
 ### Scale elasticsearch CDM deploy to one
-Scale back to one (1) elasticsearch CDM deploy, in my case elasticsearch-cdm-19ibb0br-1
+Scale back to one (1) elasticsearch CDM deploy, in my case, elasticsearch-cdm-19ibb0br-1
 ```bash
 $ oc get deploy
 NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
@@ -318,3 +316,6 @@ $ while true ; do oc exec ${ELKCDM} -c elasticsearch -- health | egrep 'green\s+
 epoch      timestamp cluster       status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
 1661259701 13:01:41  elasticsearch green           3         3    428 214    2    0        0             0                  -                100.0%
 ```
+
+## Repeat the previous steps for the remaining elasticsearch CDM
+Repeat all the steps from "Remove shards from one elastic CDM pod" to "Re-set cluster routing to all" for all the remaining elasticsearch CDM.
