@@ -6,7 +6,7 @@ toc: true
 categories: [OpenShift]
 tags: [OpenShift,ebpf]
 ---
-In this **OpenShift**, I'll show you how to run [bcc](https://iovisor.github.io/bcc/) tools, [bpftrace](https://github.com/iovisor/bpftrace) and kernel tool [bpftool](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/bpf/bpftool)
+In this **OpenShift** article, I'll show you how to run [bcc](https://iovisor.github.io/bcc/) tools, [bpftrace](https://github.com/iovisor/bpftrace) and kernel tool [bpftool](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/bpf/bpftool)
 
 **Warning:** If you are a Red Hat customer, and you are in trouble, open a support case before going forward; otherwise do the following steps at your own risk!
 
