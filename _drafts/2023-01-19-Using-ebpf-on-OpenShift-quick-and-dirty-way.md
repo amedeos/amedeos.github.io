@@ -215,6 +215,11 @@ execute buildah commit:
 $ buildah commit ubi8-working-container bpf-ocp:8.${RHEL8MINOR}-${KERNELVERSION}
 ```
 
+remove the buildah image:
+```bash
+$ buildah rm ubi8-working-container
+```
+
 check image:
 ```bash
 $ podman image ls | egrep '^REPOSI|bpf-ocp'
