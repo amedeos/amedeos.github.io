@@ -13,8 +13,7 @@ In this **OpenShift** article, I'll show you how to run [bcc](https://iovisor.gi
 ## Requirements
 Before starting, you'll need:
 
-#TODO: test on 4.12
-- Working OpenShift 4.10+ cluster, I've only tested this procedure on 4.10 and 4.11 OpenShift clusters, but it may work on all supported 4.x versions (please let me know);
+- Working OpenShift 4.10+ cluster, I've only tested this procedure on 4.10, 4.11, and 4.12 OpenShift clusters, but it may work on all supported 4.x versions (please let me know);
 - cluster-admin grant on the OpenShift cluster;
 - one subscribed RHEL host with **podman** and **buildah** installed or installable; You could use a non-subscribed host, but to use baseos and appstream eus repositories, you'd need to temporarily subscribe to the ubi8 container.
 - SSH enabled on your OpenShift node(s).
@@ -185,7 +184,6 @@ The registered system name is: 84ff9ac8faa2
 navigate to the [Red Hat Customer Portal](https://access.redhat.com/management/), click on **Systems**, then click on your container hostname (in my case, 84ff9ac8faa2), select **Subscriptions**, click on the **Attach Subscriptions** button, Select the subscription you want in the left check box, then click **Attach Subscriptions**.
 
 go back to the terminal and run:
-#TODO: insert unregister + clean
 ```bash
 $ buildah run ubi8-working-container  subscription-manager repos --list | tee -a /tmp/repos.txt
 
@@ -206,6 +204,10 @@ $ buildah run ubi8-working-container dnf install --disablerepo='*' \
         bpftrace bpftool -y
 
 $ buildah run ubi8-working-container dnf clean all
+
+$ buildah run ubi8-working-container subscription-manager unregister
+
+$ buildah run ubi8-working-container subscription-manager clean
 ```
 
 execute buildah commit:
