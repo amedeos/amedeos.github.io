@@ -1,22 +1,23 @@
 ---
 layout: post
-title:  "Using eBPF on OpenShift nodes (quick and dirty way)"
+title:  "Using eBPF on OpenShift nodes (the quick and dirty way)"
 date:   2023-01-19 10:00:00 +0100
 toc: true
 categories: [OpenShift]
 tags: [OpenShift,ebpf]
 ---
-In this **OpenShift** article, I'll show you how to run [bcc](https://iovisor.github.io/bcc/) tools, [bpftrace](https://github.com/iovisor/bpftrace) and kernel tool [bpftool](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/bpf/bpftool)
+In this **OpenShift** article, I'll show you how to run [bcc](https://iovisor.github.io/bcc/) tools, [bpftrace](https://github.com/iovisor/bpftrace), and the kernel tool [bpftool](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/bpf/bpftool).
 
-**Warning:** If you are a Red Hat customer, and you are in trouble, open a support case before going forward; otherwise do the following steps at your own risk!
+**Warning:** If you are a Red Hat customer and you are in trouble, open a support case before going forward; otherwise, do the following steps at your own risk!
 
 ## Requirements
-Before starting you'll need:
+Before starting, you'll need:
 
-- Working OpenShift 4.10+ cluster, I've been tested this procedure only on 4.10 and 4.11 OpenShift clusters, maybe should work on all supported 4.x versions (tell me);
-- cluster-admin grant on OpenShift cluster;
-- one RHEL host, subscribed, with **podman** and **buildah** installed or installable; you could use a NOT subscribed host, but in this case you have to subscribe (temporaly) ubi8 container in order to use baseos and appstream eus repositories;
-- SSH to your OpenShift node(s).
+#TODO: test on 4.12
+- Working OpenShift 4.10+ cluster, I've only tested this procedure on 4.10 and 4.11 OpenShift clusters, but it may work on all supported 4.x versions (please let me know);
+- cluster-admin grant on the OpenShift cluster;
+- one subscribed RHEL host with **podman** and **buildah** installed or installable; You could use a non-subscribed host, but to use baseos and appstream eus repositories, you'd need to temporarily subscribe to the ubi8 container.
+- SSH enabled on your OpenShift node(s).
 
 ## Run must-gather
 Before applying any change run an OpenShift must-gather:
@@ -24,8 +25,8 @@ Before applying any change run an OpenShift must-gather:
 $ oc adm must-gather
 ```
 
-## Special mention to OpenShift 4.12+
-Starting from OpenShift 4.12 version, inside a toolbox is present the bpftool, you can use it without needing to follow this procedure:
+## A Special mention to OpenShift 4.12+
+Starting with OpenShift 4.12, the bpftool is included package in a toolbox and can be used without following this procedure:
 ```bash
 $ ssh core@worker
 [core@worker-0 ~]$ sudo -i
@@ -48,19 +49,19 @@ Usage: bpftool [OPTIONS] OBJECT { COMMAND | help }
 [root@worker-0 /]#
 ```
 
-but, if you want to run bcc and bpftrace tools, you can continue to follow this guide.
+but, if you want to run the bcc and bpftrace tools, you can continue to follow this guide.
 
-## Build bpf image for your OpenShift cluster
+## Build a bpf-ocp image for your OpenShift cluster
 Before running eBPF on your OpenShift nodes, you need to build a tailored image for your cluster.
 
 This image will include:
 
 - kernel-core and kernel-headers for your OpenShift kernel version nodes;
-- bpftrace, bcc and bpftool packages;
+- bpftrace, bcc, and bpftool packages;
 - some other performance troubleshooting packages.
 
 ### Install tools on RHEL
-You need one host, usually a RHEL host, where you can build your new image with eBPF tools installed, in this example I'll show you how to those tools on RHEL host.
+You need one host, usually a RHEL host, where you can build your new image with eBPF tools installed, in this example, I'll show you how to install those tools on RHEL host.
 
 Install buildah and podman:
 ```bash
@@ -68,21 +69,21 @@ $ sudo dnf install buildah podman -y
 ```
 
 ### Retrieve OpenShift node information / version
-Remember to login to your cluster and then get one Ready node name:
+Remember to log in to your cluster and then choose a name for one of your ready nodes:
 ```bash
 $ OCPNODE=$(oc get node | egrep '\s+Ready\s+' | head -n1 | awk '{print $1}')
 $ echo ${OCPNODE}
 master-0
 ```
 
-get node kernel version:
+obtain the node kernel version:
 ```bash
 $ KERNELVERSION=$(oc debug node/${OCPNODE} -- chroot /host uname -r 2> /dev/null )
 $ echo ${KERNELVERSION} 
 4.18.0-372.26.1.el8_6.x86_64
 ```
 
-get node RHEL minor version:
+obtain the node RHEL minor version:
 ```bash
 $ RHEL8MINOR=$(oc debug node/${OCPNODE} -- chroot /host sh -c "uname -r | sed -E 's/.+\.el8_([0-9])\..*/\1/g'" 2> /dev/null )
 $ echo ${RHEL8MINOR} 
@@ -90,7 +91,7 @@ $ echo ${RHEL8MINOR}
 ```
 
 ### Create Dockerfile
-Create Dockerfile for your image:
+Create a Dockerfile for your image:
 ```bash
 $ mkdir buildbpf
 $ cd buildbpf
@@ -113,7 +114,7 @@ RUN dnf clean all
 EOF
 ```
 
-replace RHEL 8 minor version and kernel version with your cluster versions:
+replace the RHEL 8 minor version and kernel version with your cluster versions:
 ```bash
 $ sed -i "s/RHEL8MINOR/${RHEL8MINOR}/g" Dockerfile
 $ sed -i "s/KERNELVERSION/${KERNELVERSION}/g" Dockerfile
@@ -141,7 +142,7 @@ RUN dnf clean all
 
 **WARNING**: the above content is an example! Your Dockerfile could have different versions!!!
 
-### Build bpf-ocp image
+### Build the bpf-ocp image
 Run buildah:
 ```bash
 $ export BUILDAH_FORMAT=docker
@@ -181,9 +182,10 @@ The system has been registered with ID: 86326611-9b37-4888-b6bb-850007165594
 The registered system name is: 84ff9ac8faa2
 ```
 
-go to [Red Hat Customer Portal](https://access.redhat.com/management/), click on **Systems**, then click on your container hostname (in my case 84ff9ac8faa2), select **Subscriptions**, click on **Attach Subscriptions** button, select your desired Subscription on left check box, click on **Attach Subscriptions**
+navigate to the [Red Hat Customer Portal](https://access.redhat.com/management/), click on **Systems**, then click on your container hostname (in my case, 84ff9ac8faa2), select **Subscriptions**, click on the **Attach Subscriptions** button, Select the subscription you want in the left check box, then click **Attach Subscriptions**.
 
-go back to terminal and run:
+go back to the terminal and run:
+#TODO: insert unregister + clean
 ```bash
 $ buildah run ubi8-working-container  subscription-manager repos --list | tee -a /tmp/repos.txt
 
@@ -206,7 +208,7 @@ $ buildah run ubi8-working-container dnf install --disablerepo='*' \
 $ buildah run ubi8-working-container dnf clean all
 ```
 
-run buildah commit:
+execute buildah commit:
 ```bash
 $ buildah commit ubi8-working-container bpf-ocp:8.${RHEL8MINOR}-${KERNELVERSION}
 ```
@@ -218,8 +220,8 @@ REPOSITORY                                                               TAG    
 localhost/bpf-ocp                                                        8.6-4.18.0-372.26.1.el8_6.x86_64  30712fe599dd  About a minute ago  1.54 GB
 ```
 
-### Save image as a tar file
-Save the just created bpf-ocp image as tar file:
+### Save the image as a tar file
+Save the just created bpf-ocp image as a tar file:
 ```bash
 $ podman save --quiet --format docker-archive \
     -o bpf-ocp-8.${RHEL8MINOR}-${KERNELVERSION}.tar \
@@ -227,9 +229,9 @@ $ podman save --quiet --format docker-archive \
 ```
 
 ### Transfer bpf-ocp image to desired OpenShift node
-In this example I want to run bpf tools on __worker-1__ node, but change this to your real OpenShift node.
+In this example, I want to run bpf tools on the __worker-1__ node, but change this to your real OpenShift node.
 
-First, get node IP:
+First, obtain the IP address of the node:
 ```bash
 $ IPNODE=$(oc get node -owide | grep worker-1 | awk '{print $6}')
 $ echo ${IPNODE} 
@@ -244,7 +246,7 @@ bpf-ocp-8.6-4.18.0-372.26.1.el8_6.x86_64.tar 100% 1464MB 109.9MB/s   00:13
 ```
 
 ### Load image from tar file
-If you're running OpenShift 4.11+ you can simply run:
+If you're running OpenShift 4.11+, you can simply run:
 ```bash
 $ ssh core@${IPNODE}
 [core@worker-1 ~]$ sudo -i
@@ -261,7 +263,7 @@ Loaded image(s): localhost/bpf-ocp:8.6-4.18.0-372.26.1.el8_6.x86_64
 [root@worker-1 ~]#
 ```
 
-Instead if you're trying to load image on OpenShift 4.10, with podman 3.x / CoreOS 8.4, you can get this error (loglevel debug):
+Instead, if you're trying to load image on OpenShift 4.10 with podman 3.x / CoreOS 8.4, you can get this error (loglevel debug):
 ```bash
 [root@worker-1 ~]# podman load --log-level=debug -i /tmp/bpf-ocp-8.4-4.18.0-305.65.1.el8_4.x86_64.tar
 ...
@@ -273,7 +275,7 @@ in this case, create a permissive policy file:
 [root@worker-1 ~]# echo '{ "default": [{"type": "insecureAcceptAnything"}]}' > /tmp/policy-permissive.json
 ```
 
-and use this permissive signature file in order to load image:
+and use this permissive signature file in order to load the image:
 ```bash
 [root@worker-1 ~]# podman load --signature-policy /tmp/policy-permissive.json -i /tmp/bpf-ocp-8.4-4.18.0-305.65.1.el8_4.x86_64.tar 
 Getting image source signatures
@@ -286,8 +288,8 @@ Storing signatures
 Loaded image(s): localhost/bpf-ocp:8.4-4.18.0-305.65.1.el8_4.x86_64
 ```
 
-### Run bpf-ocp container
-Finally you can spin up a new bpf-ocp container:
+### Run the bpf-ocp container
+Finally, you can spin up a new bpf-ocp container:
 ```bash
 [root@worker-1 ~]# podman run --privileged --name bpf-ocp \
     --mount type=bind,source=/sys/kernel/debug,target=/sys/kernel/debug \
@@ -295,7 +297,7 @@ Finally you can spin up a new bpf-ocp container:
 [root@d18d4f16d28a /]#
 ```
 
-and test a bcc tool biolatency in order to see if is working properly (press Ctrl-C to end tracing):
+and test a bcc tool biolatency in order to see if it is working properly (press Ctrl-C to end tracing):
 ```bash
 [root@d18d4f16d28a /]# /usr/share/bcc/tools/biolatency
 Tracing block device I/O... Hit Ctrl-C to end.
@@ -322,4 +324,4 @@ Tracing block device I/O... Hit Ctrl-C to end.
 ```
 
 ### Conclusion
-This is a quick and dirty way to run eBPF on your OpenShift cluster, but you can build your bpf-ocp image for your Cluster(s), publish it / them to your registry and for example deploy it as DaemonSet on all your cluster nodes.
+This is a quick and dirty way to run eBPF on your OpenShift cluster, but you can build your bpf-ocp image for your Cluster(s), publish it / them to your registry, and for example, deploy it as DaemonSet on all your cluster nodes.
