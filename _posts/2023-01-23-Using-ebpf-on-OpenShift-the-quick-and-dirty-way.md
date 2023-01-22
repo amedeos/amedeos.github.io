@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Using eBPF on OpenShift nodes (the quick and dirty way)"
-date:   2023-01-19 10:00:00 +0100
+date:   2023-01-23 16:00:00 +0100
 toc: true
 categories: [OpenShift]
 tags: [OpenShift,ebpf]
