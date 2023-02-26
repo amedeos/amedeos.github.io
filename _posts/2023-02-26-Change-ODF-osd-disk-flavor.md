@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Change OSDs disk flavor (dimension)"
+title:  "Change OpenShift Data Foundation OSDs disk flavor (dimension)"
 date:   2023-02-26 10:00:00 +0100
 toc: true
 categories: [OpenShift]
