@@ -31,12 +31,12 @@ $ oc get storagecluster -n openshift-storage ocs-storagecluster -ojson | jq .spe
 ```
 
 ## Run must-gather
-Before applying any change run an OpenShift must-gather:
+Before applying any change, run an OpenShift must-gather:
 ```bash
 $ oc adm must-gather
 ```
 
-then, create a specific ODF must-gather, in this example I use ODF in version 4.10:
+then create a specific ODF must-gather; in this example, I use ODF in version 4.10:
 ```bash
 $ mkdir ~/odf-must-gather
 $ oc adm must-gather --image=registry.redhat.io/odf4/ocs-must-gather-rhel8:v4.10 --dest-dir=~/odf-must-gather
@@ -49,10 +49,10 @@ $ NAMESPACE=openshift-storage;ROOK_POD=$(oc -n ${NAMESPACE} get pod -l app=rook-
     health: HEALTH_OK
 ```
 
-**WARNING:** if your cluster is not in **HEALTH_OK**, stop any activities and check first ODF state!
+**WARNING:** if your cluster is not in **HEALTH_OK**, stop any activities and check the ODF state!
 
 ## Add Capacity
-Add new capacity to your cluster using new OSD flavor, in my case original storageDeviceSets is using 0.5TiB disks:
+Add new capacity to your cluster using the new OSD flavor; in my case, the original storageDeviceSets is using 0.5TiB disks:
 
 ```bash
 $ oc get storagecluster ocs-storagecluster -n openshift-storage -oyaml
@@ -84,7 +84,7 @@ $ oc get storagecluster ocs-storagecluster -n openshift-storage -oyaml
         memory: 5Gi
 ```
 
-switch to openshift-storage and backup storagecluster:
+switch to openshift-storage project and backup storagecluster:
 
 ```bash
 $ oc project openshift-storage
@@ -148,7 +148,7 @@ $ oc edit storagecluster ocs-storagecluster
   version: 4.10.0
 ```
 
-wait until ODF will rebalance all data, which means cluster will be in **HEALTH_OK** status and all placement groups (**pgs**) must be in **active+clean** state, to monitor rebalance you can use a while true infinite loop:
+wait until ODF will rebalance all data, which means cluster will be in **HEALTH_OK** status and all placement groups (**pgs**) must be in **active+clean** state. To monitor rebalance, you can use a while true infinite loop:
 
 ```bash
 $ while true; do NAMESPACE=openshift-storage;ROOK_POD=$(oc -n ${NAMESPACE} get pod -l app=rook-ceph-operator -o jsonpath='{.items[0].metadata.name}');oc exec -it ${ROOK_POD} -n ${NAMESPACE} -- ceph status --cluster=${NAMESPACE} --conf=/var/lib/rook/${NAMESPACE}/${NAMESPACE}.config --keyring=/var/lib/rook/${NAMESPACE}/client.admin.keyring | egrep 'HEALTH_OK|HEALTH_WARN|[0-9]+\s+remapped|[0-9]+\/[0-9]+[ a-z]+misplaced[ ().%a-z0-9]+|' ; sleep 10 ; done
@@ -178,7 +178,7 @@ $ while true; do NAMESPACE=openshift-storage;ROOK_POD=$(oc -n ${NAMESPACE} get p
     recovery: 86 MiB/s, 1 keys/s, 30 objects/s
 ```
 
-in the above example, you can see that ceph is rebalancing / remapping PGs, wait until all PGs are in **active+clean** state:
+in the above example, you can see that Ceph is rebalancing and remapping PGs. Wait until all PGs are in **active+clean** state:
 
 ```bash
 $ NAMESPACE=openshift-storage;ROOK_POD=$(oc -n ${NAMESPACE} get pod -l app=rook-ceph-operator -o jsonpath='{.items[0].metadata.name}');oc exec -it ${ROOK_POD} -n ${NAMESPACE} -- ceph status --cluster=${NAMESPACE} --conf=/var/lib/rook/${NAMESPACE}/${NAMESPACE}.config --keyring=/var/lib/rook/${NAMESPACE}/client.admin.keyring
@@ -220,7 +220,6 @@ RANK      STATE                       MDS                     ACTIVITY     DNS  
 
 ## Identify old OSDs / disks to remove
 Take a note of your 3 OSD id to remove, they are based on your old flavor (weight 0.48830), to see ODF OSD topology run:
-
 ```bash
 $ NAMESPACE=openshift-storage;ROOK_POD=$(oc -n ${NAMESPACE} get pod -l app=rook-ceph-operator -o jsonpath='{.items[0].metadata.name}');oc exec -it ${ROOK_POD} -n ${NAMESPACE} -- ceph osd tree --cluster=${NA
 MESPACE} --conf=/var/lib/rook/${NAMESPACE}/${NAMESPACE}.config --keyring=/var/lib/rook/${NAMESPACE}/client.admin.keyring
@@ -241,18 +240,18 @@ ID   CLASS  WEIGHT   TYPE NAME                                       STATUS  REW
   3    ssd  1.95309                  osd.3                               up   1.00000  1.00000
 ```
 
-In my case the old OSD are osd.0, osd.1 and osd.2, those OSDs needs to be removed / deleted one by one, waiting for **HEALTH_OK** after every removing / deleting.
+In my case, the old OSD are osd.0, osd.1 and osd.2. Those OSDs need to be removed / deleted one by one, waiting for **HEALTH_OK** after every removal / deletion.
 
-## Remove OSD in old Storage flavor
-### Switch to openshift-storage project
-First switch to openshift-storage project:
+## Remove the OSD from the old Storage flavor
+### Switch to the openshift-storage project
+First switch to the openshift-storage project:
 
 ```bash
 $ oc project openshift-storage
 ```
 
-### Copy Ceph config and keyring files
-Copy your Ceph config file and keyring file from rook container pod to your Linux box, then those files will be transferred to one mon container in order to run ceph commands after scaling down rook operator.
+### Copy the Ceph config and keyring files
+Copy your Ceph config file and keyring file from rook container pod to your Linux box, and then those files will be transferred to one mon container in order to run Ceph commands after scaling down rook operator.
 
 Copy files from rook container to your Linux box:
 ```bash
@@ -268,7 +267,7 @@ WARNING: cannot use rsync: rsync not available in container
 client.admin.keyring
 ```
 
-Copy openshift-storage.config and openshift-storage.config files from your Linux box to one mon container:
+Copy the openshift-storage.config and openshift-storage.config files from your Linux box to one mon container:
 
 ```bash
 $ MONA=$(oc get pod | grep rook-ceph-mon | egrep '2\/2\s+Running' | head -n1 | awk '{print $1}')
@@ -283,7 +282,7 @@ Defaulted container "mon" out of: mon, log-collector, chown-container-data-dir (
 
 **NOTE**: MONA, in one of Italian regional language means stupid people :smile:
 
-Check ceph command on MONA container:
+Check the Ceph command on MONA container:
 
 ```bash
 $ oc rsh ${MONA}
@@ -296,7 +295,7 @@ sh-4.4# exit
 ```
 
 ### Scale down OpenShift Data Foundation operators
-Now we can scale to zero rook and ocs operators:
+We can now scale to zero rook and ocs operators:
 
 ```bash
 $ oc scale deploy ocs-operator --replicas=0
@@ -306,7 +305,7 @@ deployment.apps/rook-ceph-operator scaled
 ```
 
 ### Remove one OSD
-Now you can remove one OSD, in my case I'll remove osd.0 (zero), but in your case could be a different ID.
+Now you can remove one OSD; in my case, I'll remove osd.0 (zero), but in your case, it could be a different ID.
 
 ```bash
 $ failed_osd_id=0
@@ -314,7 +313,6 @@ $ export PS1="[\u@\h \W]\ OSD=$failed_osd_id $ "
 
 $ oc scale deploy rook-ceph-osd-${failed_osd_id} --replicas=0
 deployment.apps/rook-ceph-osd-0 scaled
-
 
 $ oc process -n openshift-storage ocs-osd-removal -p FAILED_OSD_IDS=${failed_osd_id} FORCE_OSD_REMOVAL=true |oc create -n openshift-storage -f -
 job.batch/ocs-osd-removal-job created
@@ -327,7 +325,7 @@ $ oc logs ${JOBREMOVAL} | egrep "cephosd: completed removal of OSD ${failed_osd_
 
 **NOTE**: on the last command you must see **cephosd: completed removal of OSD X**, where X is your osd id (in my case zero).
 
-check ceph health status, where you can see a degraded state due to one osd removal:
+Check the Ceph health status, where you can see a degraded state due to one osd removal:
 
 ```bash
 $ oc rsh ${MONA}
@@ -359,13 +357,13 @@ sh-4.4# ceph status --cluster=openshift-storage --conf=/tmp/openshift-storage.co
 sh-4.4#
 ```
 
-wait until ceph returns HEALTH_OK and all PGs are in **active+clean** state:
+wait until Ceph returns HEALTH_OK and all PGs are in **active+clean** state:
 
 ```bash
 sh-4.4# while true; do ceph status --cluster=openshift-storage --conf=/tmp/openshift-storage.config --keyring=/tmp/client.admin.keyring | egrep --color=always '[0-9]+\/[0-9]+.*(degraded|misplaced)|' ; sleep 10 ; done
 ```
 
-**WARNING**: before going forward you must wait for ceph **HEALTH_OK** and all PGs in **active+clean** state!
+**WARNING**: before proceeding, you must wait for Ceph **HEALTH_OK** and all PGs in **active+clean** state!
 
 Delete removal job:
 
@@ -377,7 +375,7 @@ job.batch "ocs-osd-removal-job" deleted
 Repeat these steps for each OSD you need to remove (in my case for osd.1 and osd.2)
 
 ## Remove your old storageDeviceSets pointing to old OSD disks flavor
-After removing all OSD that belongs to your old storageDeviceSets (in my case with disks flavor set to 0.5TiB), you can edit your **storagecluster** object to removing it:
+After removing all OSD from your old storageDeviceSets (in my case, with disk flavor set to 0.5TiB), you can remove it from your **storagecluster** object:
 
 Make a backup before editing your storagecluster:
 
@@ -385,7 +383,7 @@ Make a backup before editing your storagecluster:
 $ oc get storagecluster ocs-storagecluster -oyaml | tee storagecluster-ocs-storagecluster-before-remove-500g.yaml
 ```
 
-change / edit your storagecluster storageDeviceSets, leaving only new created storageDeviceSets, in my case with 2TiB disks flavor:
+change / edit your storagecluster storageDeviceSets so that only newly created storageDeviceSets remain; in my case, with 2TiB disks flavor:
 
 ```bash
 $ oc edit storagecluster ocs-storagecluster
@@ -419,7 +417,7 @@ $ oc edit storagecluster ocs-storagecluster
 ```
 
 ## Scale up OpenShift Data Foundation operators
-At this point you can scale up ocs-operator:
+At this point, you can scale up ocs-operator:
 
 ```bash
 $ oc scale deploy ocs-operator --replicas=1
