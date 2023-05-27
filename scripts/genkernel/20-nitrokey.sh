@@ -3,7 +3,8 @@
 source /etc/genkernel.conf
 rm -rf ${INITRAMFS_OVERLAY}
 mkdir -p ${INITRAMFS_OVERLAY}/{usr/lib64,usr/bin,lib64,bin,etc}
-NITROLUKS="https://github.com/artosan/nitroluks"
+#NITROLUKS="https://github.com/artosan/nitroluks"
+NITROLUKS="https://github.com/amedeos/nitroluks"
 INITRD_PATCH="https://raw.githubusercontent.com/amedeos/amedeos.github.io/master/scripts/genkernel/initrd.scripts.patch"
 GENKERNEL_DIR="/usr/share/genkernel/defaults"
 CRYPT_FILE="initrd.scripts"

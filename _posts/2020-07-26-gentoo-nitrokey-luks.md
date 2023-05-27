@@ -11,6 +11,8 @@ In this guide I'll show you how to unlock in initramfs, build with new **genkern
 I've just written an [older guide](https://amedeos.github.io/gentoo/nitrokey/2019/01/21/gentoo-nitrokey-luks.html) about this, but that guide was based on the **genkernel-next**, which is recently masked in the portage, so this one will be based on **~amd64 genkernel**.
 ## Warning
 This guide is only tested on my Gentoo box, __SO BE CAREFUL, YOU CAN MAKE YOUR GENTOO UNBOOTABLE.__
+## Update 27/05/2023
+Add retry function when nitro_luks is looking for Nitrokey device, because now genkernel executes it before completing udev devices; for this reason I forked [nitroluks](https://github.com/amedeos/nitroluks) and now script file [20-nitrokey.sh](https://raw.githubusercontent.com/amedeos/amedeos.github.io/master/scripts/genkernel/20-nitrokey.sh) point to it.
 ## Update 20/11/2022
 Patch file [initrd.scripts.patch](https://amedeos.github.io/scripts/genkernel/initrd.scripts.patch) has been updated for latest sys-kernel/genkernel-4.3.1.
 ## Update 25/11/2021
@@ -97,7 +99,8 @@ Put this content inside the 20-nitrokey.sh script file or [download from here](h
 source /etc/genkernel.conf
 rm -rf ${INITRAMFS_OVERLAY}
 mkdir -p ${INITRAMFS_OVERLAY}/{usr/lib64,usr/bin,lib64,bin,etc}
-NITROLUKS="https://github.com/artosan/nitroluks"
+#NITROLUKS="https://github.com/artosan/nitroluks"
+NITROLUKS="https://github.com/amedeos/nitroluks"
 INITRD_PATCH="https://raw.githubusercontent.com/amedeos/amedeos.github.io/master/scripts/genkernel/initrd.scripts.patch"
 GENKERNEL_DIR="/usr/share/genkernel/defaults"
 CRYPT_FILE="initrd.scripts"
