@@ -9,6 +9,8 @@ tags: [gentoo,luks,systemd]
 ## Introduction
 In this post I'll describe how to unlock your **LUKS** device, which contains the root file system, using a **FIDO2** hardware key.
 
+**UPDATE: 03/08/2023**: Update /etc/dracut.conf.d/fido2.conf file with new systemd' fido2 requirement
+
 ## Requirements
 In order to unlock your LUKS device at boot using your FIDO2 hardware key your Gentoo box need to meet these conditions:
 
@@ -85,7 +87,8 @@ rootvolume /dev/nvme0n1p3 - fido2-device=auto
 Dracut, by default doesn't install libfido2 and crypttab file, for this you can create a new file **/etc/dracut.conf.d/fido2.conf** with the following contents:
 ```bash
 # cat /etc/dracut.conf.d/fido2.conf 
-install_items+=" /etc/crypttab /usr/bin/fido2-token "
+add_dracutmodules+=" fido2 "
+install_items+=" /etc/crypttab "
 ```
 
 now you can rebuild your initial ram file system for your current kernel:
