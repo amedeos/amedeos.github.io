@@ -11,6 +11,8 @@ In this post I'll describe how to install [Gentoo](https://gentoo.org/) with **s
 
 I've also written two different guides to install Gentoo on LUKS, but using LVM Volume group, and ext4 filesystem, if you're interested in those you can find [here](https://amedeos.github.io/gentoo/2019/01/14/install-gentoo-with-luks-lvm-and-systemd.html) a guide to install on BIOS partition, and [here](https://amedeos.github.io/gentoo/2019/01/14/install-gentoo-with-luks-lvm-and-systemd.html) a guide to install on UEFI partition.
 
+**UPDATE 23/08/2023**: Correct typo on GRUB_PLATFORMS
+
 ## Disk partitions
 I'm using to create gpt partitions, with a small [BIOS boot partition](https://en.wikipedia.org/wiki/BIOS_boot_partition) (2 MiB) to be used by grub for second stages of itself.
 ### Partition scheme
@@ -194,7 +196,7 @@ CPU_FLAGS_X86="aes avx avx2 f16c fma3 mmx mmxext pclmul popcnt sse sse2 sse3 sse
 
 MAKEOPTS="-j8"
 
-GRUB_PLATFORM="efi-64"
+GRUB_PLATFORMS="efi-64"
 
 L10N="en it"
 
@@ -434,7 +436,7 @@ Configure your kernel with the preferred options, and then
 ### Install grub
 Configure grub to use efi-64 platform:
 ```bash
-(chroot) livecd ~# echo 'GRUB_PLATFORM="efi-64"' >> /etc/portage/make.conf
+(chroot) livecd ~# echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
 ```
 emerge grub:
 ```bash
