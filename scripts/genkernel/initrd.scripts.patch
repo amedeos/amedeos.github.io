@@ -5,7 +5,7 @@
  			fi
  
 -			# At this point, {header,key}file or not, we're ready!
--			crypt_filter "${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
+-			crypt_filter "${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}" "${ASK_PASS}"
 -			crypt_filter_ret=$?
 +                        # nitrokey
 +                        NITROLUKS_BIN="/bin/nitro_luks"
@@ -23,14 +23,14 @@
 +                                        echo "error on nitrokey cryptsetup"
 +                                        rm -f $nitropass
 +			                # At this point, {header,key}file or not, we're ready!
-+                                        crypt_filter "${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
++                                        crypt_filter "${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}" "${ASK_PASS}"
 +                                        crypt_filter_ret=$?
 +                                fi
 +                        else
 +                                echo "error on nitrokey"
 +                                rm -f $nitropass
-+			        # At this point, {header,key}file or not, we're ready!
-+                                crypt_filter "${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
++			         # At this point, {header,key}file or not, we're ready!
++                                crypt_filter "${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}" "${ASK_PASS}"
 +                                crypt_filter_ret=$?
 +                        fi # end if [ "${retnitro}" = "0" ]
  
