@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Inspecting OpenShift container images for cgroups v2 compatibility"
-date:   2026-03-09 10:00:00 +0100
+date:   2026-03-09 08:00:00 +0100
 toc: true
 categories: [OpenShift]
 tags: [OpenShift,cgroupsv2,java,nodejs,dotnet]
