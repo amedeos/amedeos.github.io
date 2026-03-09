@@ -78,13 +78,6 @@ The first step is to connect to your OpenShift cluster. You can provide the API 
 $ ./image-cgroupsv2-inspector --api-url https://api.mycluster.example.com:6443 --token sha256~xxxxx
 ```
 
-Or, if you already have a valid `KUBECONFIG`, you can just set it:
-
-```bash
-$ export KUBECONFIG=/path/to/kubeconfig
-$ ./image-cgroupsv2-inspector
-```
-
 After the first successful connection, credentials are saved to an `.env` file so you don't need to provide them again.
 
 ### Collecting images (without analysis)
