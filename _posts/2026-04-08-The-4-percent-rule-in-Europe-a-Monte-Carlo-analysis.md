@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The 4% rule in Europe: a Monte Carlo analysis for FIRE investors"
-date:   2026-04-08 05:00:00 +0200
+date:   2026-04-08 06:00:00 +0200
 toc: true
 categories: [FIRE]
 tags: [FIRE,retirement,monte-carlo,statistics,investing,europe]
