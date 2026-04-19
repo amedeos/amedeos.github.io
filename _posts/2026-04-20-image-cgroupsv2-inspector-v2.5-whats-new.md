@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "image-cgroupsv2-inspector 2.5: Registry mode, Go scanning, deep-scan, and HTML reports"
-date:   2026-04-20 08:00:00 +0100
+date:   2026-04-20 05:00:00 +0200
 toc: true
 categories: [OpenShift]
 tags: [OpenShift,cgroupsv2,java,nodejs,dotnet,golang,quay]
