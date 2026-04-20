@@ -6,6 +6,8 @@ toc: true
 categories: [OpenShift]
 tags: [OpenShift,cgroupsv2,java,nodejs,dotnet]
 ---
+> **Update (April 2026):** this article describes **image-cgroupsv2-inspector v1.0**. Since then the tool has evolved significantly: Quay registry scanning, Go binary analysis, deep-scan heuristics, `--resume`, `--image-timeout`, and a self-contained HTML report. For the new features see the follow-up post: [image-cgroupsv2-inspector 2.5: Registry mode, Go scanning, deep-scan, and HTML reports](/openshift/2026/04/20/image-cgroupsv2-inspector-v2.5-whats-new.html).
+
 In my daily work I regularly help customers plan their OpenShift upgrades, and one of the most common concerns when moving to cgroups v2 is understanding which workloads are affected. I needed a quick and reliable way to scan an entire cluster and identify incompatible Java, Node.js, and .NET runtimes, so I built **image-cgroupsv2-inspector** and released it as open source, so that anyone can use it, modify it, and contribute to it.
 
 In this article, I'll walk you through the tool: what it does, how it works, and how you can use it on your own clusters. If you're planning to upgrade your OpenShift cluster to a version that uses cgroups v2 by default (OpenShift 4.14+), or if you're migrating from cgroups v1, this tool helps you identify which workloads might break after the transition. Starting from **OpenShift 4.19+**, the migration to cgroups v2 will be **mandatory** if not already performed, so it is important to assess your workloads sooner rather than later.
