@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Planning a trip to Peru with an LLM wiki"
+title:  "Planning a trip to Perú with an LLM wiki"
 date:   2026-06-11 06:00:00 +0200
 toc: true
 categories: [AI]
@@ -8,7 +8,7 @@ tags: [llm, claude-code, obsidian, knowledge-base, karpathy, travel]
 ---
 Planning a long, multi-city trip is, at its core, a knowledge management problem. Over the weeks before departure you accumulate a pile of heterogeneous sources -- a guidebook PDF, a dozen blog posts, restaurant lists, official site maps, booking confirmations -- and they end up scattered across browser tabs, screenshots, and half-finished notes. Every time you need an answer ("how do we get from A to B?", "is this restaurant safe for me?") you re-read the same sources from scratch. The knowledge never **compounds**.
 
-When Andrej Karpathy published his [LLM wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) in April 2026, it struck me as the right tool for exactly this kind of problem. So I used it to plan a two-week trip across Peru -- Lima, Arequipa, Cuzco and the Sacred Valley, Machu Picchu, and Lake Titicaca -- and then carried the result with me on the ground. This post is about *how* I did it: the structure, the schema, the workflows, and the laptop-to-mobile loop that made it useful during the trip and not just before it.
+When Andrej Karpathy published his [LLM wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) in April 2026, it struck me as the right tool for exactly this kind of problem. So I used it to plan a two-week trip across Perú -- Lima, Arequipa, Cuzco and the Sacred Valley, Machu Picchu, and Lake Titicaca -- and then carried the result with me on the ground. This post is about *how* I did it: the structure, the schema, the workflows, and the laptop-to-mobile loop that made it useful during the trip and not just before it.
 
 ## The LLM wiki pattern in 60 seconds
 
@@ -143,7 +143,7 @@ This is the workflow that closes the loop. During the trip I capture raw notes o
 
 Because the wiki is plain markdown with aggressive cross-linking, Obsidian's graph view comes for free -- and it's genuinely useful, not just pretty. The structure of the trip emerges visually: hubs (the index, the major cities), tight clusters (everything around Lake Titicaca, everything in the Sacred Valley), and the concept pages that thread through everything.
 
-![Obsidian graph view of the Peru wiki](/images/llm-peru/obsidian-graph-desktop-full.png)
+![Obsidian graph view of the Perú wiki](/images/llm-peru/obsidian-graph-desktop-full.png)
 
 A closer, less dense view makes the hub-and-cluster structure clearer:
 
@@ -163,7 +163,7 @@ One month of Sync was a trivial cost for having the entire knowledge base -- eve
 
 ## A concrete example: navigating a food allergy
 
-A good test of any planning system is how it handles a hard personal constraint. I'm allergic to shellfish, and Peru is one of the great seafood cuisines on the planet -- ceviche, tiraditos, and cross-contamination everywhere. So the wiki has a dedicated `shellfish-allergy-navigation` page, and the allergy threads through the food pages and the day plans.
+A good test of any planning system is how it handles a hard personal constraint. I'm allergic to shellfish, and Perú is one of the great seafood cuisines on the planet -- ceviche, tiraditos, and cross-contamination everywhere. So the wiki has a dedicated `shellfish-allergy-navigation` page, and the allergy threads through the food pages and the day plans.
 
 In practice this meant the agent annotated restaurant entries with what's safe and why -- charred octopus is a mollusc, not a crustacean, so it's fine; a fish-only ceviche still carries cross-contamination risk, so always tell the waiter -- and it folded "communicate the allergy at check-in / at the table" into the operational plans as a recurring step. You can see it surface in the Arequipa plan above as part of the day-one context. Encoding a constraint once, in a page the agent always consults, is far more reliable than remembering it restaurant by restaurant.
 
