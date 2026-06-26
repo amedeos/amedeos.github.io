@@ -16,12 +16,12 @@
 title: amedeos home
 email: amedeo at linux com
 description: >- # this means to ignore newlines until "baseurl:"
-  I'm a Linux nerd, Open{Stack,Shift} nerd, DevOps nerd, music nerd,
+  I'm a Linux nerd, OpenShift nerd, DevOps nerd, AI nerd, music nerd,
   Gentoo nerd and runner nerd in my life.
+
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  amedeos
-google_analytics: G-FZ1Q6M7HZ2
 
 # Build settings
 markdown: kramdown
