@@ -1,0 +1,31 @@
+# =============================================================================
+# Custom Presidio Analyzer image — English + Italian NER (privacy-plus C1).
+# -----------------------------------------------------------------------------
+# Adds the Italian spaCy NER model to the community analyzer so the privacy-plus
+# C1 detector can score Italian text natively, instead of the English-only stock
+# image mis-firing on Italian (the "ciao" -> PERSON false positive).
+#
+# Presidio + spaCy models are community open-source. The models are baked at
+# build time -> NO runtime download, NO external egress (sovereignty premise).
+#
+# This lab ships it_core_news_md (RAM-friendly on CPU-only clusters); the
+# it_core_news_lg upgrade is a swap here + in nlp-config.yaml + a memory bump.
+#
+# Prebuilt: quay.io/asalvati/presidio-analyzer-multilang:0.1
+# =============================================================================
+FROM ghcr.io/data-privacy-stack/presidio-analyzer:2.2.363
+
+USER 0
+
+# Italian NER model, installed alongside the bundled English en_core_web_lg.
+# NB: if the base image uses a virtualenv, ensure `python` targets it.
+RUN python -m spacy download it_core_news_md
+
+# Custom NLP engine config declaring BOTH languages. app.py reads NLP_CONF_FILE at
+# runtime and builds the AnalyzerEngine with supported_languages = [en, it].
+COPY nlp-config.yaml /opt/presidio/nlp-config.yaml
+ENV NLP_CONF_FILE=/opt/presidio/nlp-config.yaml
+
+# Drop back to non-root. On OpenShift the SCC assigns an arbitrary UID anyway; spaCy
+# models install world-readable into site-packages, so any UID can read them.
+USER 1000

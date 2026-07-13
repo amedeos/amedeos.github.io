@@ -1,0 +1,186 @@
+# Policy: privacy-plus  (hardened privacy-scoring engine)
+# =============================================================================
+# Additive, NON-BREAKING successor to policy/privacy.yaml. The shipped `privacy`
+# gate (5-regex, first-match, binary) is UNTOUCHED and still valid. privacy-plus
+# is an OPT-IN engine selected by running LiteLLM with config-privacy-plus.yaml
+# (see manifests/60-privacy-plus/). See privacy-policy-hardening.md for the design.
+#
+# Several detectors feed ONE privacy_score in [0,1]; a fixed (per-team) threshold
+# keeps the LOCAL/SOTA decision deterministic and explainable. Everything runs
+# in-cluster, on CPU, with NO external egress (the sovereignty premise).
+#
+# Consumed by litellm/privacy_scoring.py (engine) via
+# litellm/policy_hook_privacy_plus.py (hook). Decision stays BINARY (no redaction).
+# =============================================================================
+policy: privacy-plus
+local_model: local-fast
+sota_model: sota-smart
+
+# --- Scoring mechanics -------------------------------------------------------
+# noisy_or: score = 1 - Π(1 - wᵢ) over every fired signal's weight. A single
+# strong signal dominates; several weak ones still accumulate (avoids dilution).
+aggregation: noisy_or
+# Whole-payload scan: evaluate system + every user turn + tool/function arguments,
+# not just the last user message (fixes the shipped gate's "last message only").
+scan: whole_payload
+# Fail-closed: on ANY detector error or ambiguity, route LOCAL (the safe side for
+# a privacy control). This flips the shipped hook's fail-OPEN default.
+fail_closed: true
+
+# privacy_score >= threshold -> LOCAL, else SOTA. One knob tunes conservativeness.
+threshold: 0.50
+# Per-team override. The team comes from the `x-team` header the GATEWAY injects from the API
+# key's `maas-group` label (AuthPolicy, non-spoofable) — not from the client. Same identity the
+# `tiering:` guardrail uses. Lower threshold = MORE conservative (more traffic kept LOCAL).
+thresholds:
+  legal: 0.30        # legal: very conservative — almost everything sensitive -> LOCAL
+  research: 0.70     # research: more permissive — only strongly-sensitive -> LOCAL
+  _default: 0.50
+
+# --- A — structured PII (rules + validators, fully deterministic) ------------
+# Hardened successors to privacy.yaml's regexes. `validator` cuts false positives
+# by verifying the entity (Luhn / codice-fiscale checksum / IBAN mod-97). A match
+# contributes `weight` to the score only if the validator (when set) also passes.
+pii_patterns:
+  - name: codice_fiscale
+    regex: '\b[A-Z]{6}\d{2}[A-EHLMPR-T]\d{2}[A-Z]\d{3}[A-Z]\b'
+    validator: codice_fiscale
+    weight: 0.85
+  - name: iban
+    regex: '\b[A-Z]{2}\d{2}[A-Z0-9]{11,30}\b'
+    validator: iban_mod97
+    weight: 0.80
+  - name: credit_card
+    regex: '\b(?:\d[ -]?){13,19}\b'
+    validator: luhn
+    weight: 0.85
+  - name: email
+    regex: '\b[\w.+-]+@[\w-]+\.[\w.-]+\b'
+    weight: 0.40
+  - name: italian_mobile
+    regex: '\b(?:\+39\s?)?3\d{2}[\s.-]?\d{6,7}\b'
+    weight: 0.35
+
+# Secrets / credentials — often the real leak risk. No validator; a shape match
+# is enough to force the payload LOCAL.
+secret_patterns:
+  - name: openai_key
+    regex: '\bsk-[A-Za-z0-9]{20,}\b'
+    weight: 0.95
+  - name: aws_access_key
+    regex: '\bAKIA[0-9A-Z]{16}\b'
+    weight: 0.95
+  - name: jwt
+    regex: '\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b'
+    weight: 0.90
+  - name: private_key_header
+    regex: '-----BEGIN (?:RSA |EC |OPENSSH |PGP )?PRIVATE KEY-----'
+    weight: 0.95
+  - name: password_assignment
+    regex: '(?i)\b(?:password|passwd|secret|api[_-]?key|token)\s*[:=]\s*\S{6,}'
+    weight: 0.70
+
+# --- B — sensitive topics without an identifier (weighted lexicons) ----------
+# The direct answer to "intercept more prompts": flags text that is unmistakably
+# sensitive but carries NO formal PII (the class the regex gate misses). Terms are
+# matched case-insensitively as whole words. Bilingual (IT + EN) so the demo works
+# in either language. health = GDPR special category -> highest weight.
+lexicons:
+  health:
+    weight: 0.80
+    terms: [diagnosi, referto, patologia, terapia, "cartella clinica", anamnesi,
+            oncologo, disabilità, "salute mentale", paziente, prescrizione, farmaco,
+            "intervento chirurgico", "condizione cronica", "post-operatorio", ricovero,
+            malattia, sintomi, diagnosed, diagnosis,
+            "chronic condition", oncologist, prescription, disease, illness,
+            disability, "mental health", medical]
+  finance:
+    weight: 0.50
+    terms: [stipendio, retribuzione, "estratto conto", saldo, mutuo, pignoramento,
+            finanziamento, "busta paga", "buste paga", debito, debitoria, moroso,
+            salary, payroll, "bank balance", "account statement", mortgage]
+  legal:
+    weight: 0.50
+    terms: [contenzioso, querela, licenziamento, citazione, diffida,
+            litigation, lawsuit, subpoena, termination, "cease and desist"]
+  # hr = SENSITIVE HR only (weight >= threshold -> LOCAL). Neutral HR (assunzione,
+  # colloquio, annuncio di lavoro) is deliberately NOT listed so it routes SOTA.
+  hr:
+    weight: 0.55
+    terms: [dimissioni, "valutazione performance", "provvedimento disciplinare",
+            "reclamo disciplinare", "fine rapporto",
+            resignation, "performance review", "disciplinary action", grievance]
+  credentials:
+    weight: 0.70
+    terms: [password, credenziali, "chiave privata", "token di accesso",
+            credentials, "private key", "access token"]
+
+# --- C1 — local NER (Microsoft Presidio, in-cluster CPU service) -------------
+# Named-Entity Recognition catches entities regexes cannot enumerate (person
+# names, addresses, orgs), each with a per-entity confidence that feeds the score.
+# The engine POSTs {text, language} to the analyzer's /analyze; a returned entity
+# contributes its `weight` only if the analyzer confidence >= min_confidence.
+#
+# NOTE: Presidio is a community open-source project.
+# It runs in-cluster on CPU with no external egress.
+#
+# Option 2 (multilingual): the custom image quay.io/asalvati/presidio-analyzer-
+# multilang bundles the English (en_core_web_lg) AND Italian (it_core_news_md) spaCy
+# models. privacy_scoring.py detects the payload language with fastText and calls
+# Presidio with the matching model; a language Presidio does NOT model is handled
+# per `on_unsupported` (skip -> rely on A+B, which are bilingual/deterministic).
+# This removes the English-model-on-Italian false positive (e.g. "ciao" -> PERSON).
+ner:
+  enabled: true
+  url: http://presidio-analyzer.maas-routing.svc.cluster.local:3000/analyze
+  supported_languages: [en, it]      # languages the Presidio image actually models
+  lang_detect:
+    model_path: /opt/models/lid.176.ftz  # fastText LID, baked into the litellm image
+    min_chars: 12                    # shorter text -> treated as undetectable
+    min_confidence: 0.50             # below this -> language UNCERTAIN: query ALL supported
+                                     # models and union (fastText is weak on short/mixed text)
+  on_unsupported: skip               # only for a CONFIDENTLY-detected unsupported language:
+                                     # skip (rely on A+B) | force_local
+  timeout_seconds: 3.0
+  min_confidence: 0.60
+  entity_weights:
+    PERSON: 0.60
+    LOCATION: 0.40
+    NRP: 0.55                 # nationality / religious / political group
+    MEDICAL_LICENSE: 0.70
+    IBAN_CODE: 0.80
+    CREDIT_CARD: 0.85
+    US_SSN: 0.85
+    # EMAIL_ADDRESS intentionally omitted: its Presidio recognizer stalls ~30s on
+    # offline domain validation under the `en` model, starving /health and getting the
+    # single-worker pod liveness-killed. It is weak PII (0.40 < 0.50 threshold) so it
+    # never routes LOCAL on its own — dropping it has ~no routing impact. Do NOT re-add
+    # without first fixing the recognizer hang (see manifests/60-privacy-plus + gunicorn
+    # --threads override). The engine only requests the entities listed here.
+    PHONE_NUMBER: 0.35
+    IP_ADDRESS: 0.40
+
+# --- C2 — semantic classifier (LLM). OPTIONAL, gray-zone only, ADVISORY -------
+# Additive & swappable. An OpenAI-compatible model judges sensitivity ONLY for
+# prompts the rules leave in the gray zone; its verdict can only RAISE the score
+# (add a signal), never lower it — the rules (A/B/C1) stay sovereign. Fail-closed:
+# on any error/timeout/parse-failure the gray-zone prompt is treated as sensitive.
+#
+# SOVEREIGNTY (read before any real-world use): in the LAB this points at an
+# EXTERNAL corporate MaaS model, PURELY to validate the mechanism. In production it
+# MUST be a LOCAL, TRUSTED model — otherwise you send sensitive text OUT of the
+# cluster to decide it is sensitive, voiding the privacy guarantee. Swapping is a
+# config/Secret change (base_url/model/key), NOT a code change.
+classifier:
+  enabled: false              # default OFF -> non-breaking; flip on to A/B on the eval
+  gray_low: 0.15              # rules score < gray_low  -> confident benign, skip the LLM
+                              # rules score >= threshold -> already LOCAL, skip the LLM
+  weight: 0.80                # signal weight when the LLM says "sensitive"
+  timeout_seconds: 8.0
+  max_tokens: 200
+  temperature: 0.0
+  # Backend params injected from the Secret (classifier-provider-secret) via env, so
+  # the model is swappable without touching code.
+  base_url_env: CLASSIFIER_BASE_URL
+  model_env: CLASSIFIER_MODEL
+  api_key_env: CLASSIFIER_API_KEY

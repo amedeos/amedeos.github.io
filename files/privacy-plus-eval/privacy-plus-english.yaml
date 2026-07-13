@@ -1,0 +1,349 @@
+# =============================================================================
+# English evaluation set for privacy-plus routing tuning.
+# -----------------------------------------------------------------------------
+# STRICT 1:1 TRANSLATION of privacy-plus-italian.yaml: identical id / category /
+# expect / order and identical synthetic PII tokens (tax codes, IBANs, cards,
+# keys) and person names — ONLY the natural-language wording is translated.
+# This makes the two files the SAME dataset in two languages, so per-language
+# statistics compare like-for-like (isolating language handling: English spaCy
+# NER vs the Italian model, lexicon coverage). Keep it a strict 1:1 translation:
+# if a case is added/edited in the Italian set, mirror the SAME id here.
+#
+# expect: local -> keep on the LOCAL model (sensitive/private) ; sota -> may go SOTA.
+# All PII/secret values are SYNTHETIC (Luhn/IBAN test values, example.com emails,
+# placeholder keys). The card/IBAN/tax-code validators are what fire detector A.
+# =============================================================================
+lang: en
+cases:
+  - {id: benign-01, category: benign, expect: sota, text: "Hi, help me build a microservice in Python."}
+  - {id: benign-02, category: benign, expect: sota, text: "Explain the difference between REST and gRPC."}
+  - {id: benign-03, category: benign, expect: sota, text: "Translate the word buongiorno into English."}
+  - {id: benign-04, category: benign, expect: sota, text: "What is the capital of Japan?"}
+  - {id: benign-05, category: benign, expect: sota, text: "Write a function that sorts a list of numbers."}
+  - {id: benign-06, category: benign, expect: sota, text: "How does an application load balancer work?"}
+  - {id: benign-07, category: benign, expect: sota, text: "Give me three ideas for a company team-building event."}
+  - {id: benign-08, category: benign, expect: sota, text: "Summarize the benefits of cloud computing for an SME."}
+  - {id: benign-09, category: benign, expect: sota, text: "Recommend a good science fiction book."}
+  - {id: benign-10, category: benign, expect: sota, text: "How do you make a classic tiramisu?"}
+  - {id: benign-11, category: benign, expect: sota, text: "Explain what Kubernetes is in simple terms."}
+  - {id: benign-12, category: benign, expect: sota, text: "Write an SQL query to count orders per month."}
+  - {id: benign-13, category: benign, expect: sota, text: "What is the formula for the area of a circle?"}
+  - {id: benign-14, category: benign, expect: sota, text: "Generate a slogan for a logistics startup."}
+  - {id: benign-15, category: benign, expect: sota, text: "How do I optimize the performance of a web application?"}
+  - {id: benign-16, category: benign, expect: sota, text: "List the planets of the solar system in order."}
+  - {id: benign-17, category: benign, expect: sota, text: "Explain the difference between the TCP and UDP protocols."}
+  - {id: benign-18, category: benign, expect: sota, text: "Help me write a unit test for this function."}
+  - {id: benign-19, category: benign, expect: sota, text: "How do I set up a continuous integration pipeline?"}
+  - {id: benign-20, category: benign, expect: sota, text: "Give me tips to improve code readability."}
+  - {id: benign-21, category: benign, expect: sota, text: "Analyze the aggregated sales data for the third quarter."}
+  - {id: benign-22, category: benign, expect: sota, text: "Let's discuss the market strategy for next year."}
+  - {id: person-01, category: person, expect: local, text: "Write a thank-you letter for Mario Rossi."}
+  - {id: person-02, category: person, expect: local, text: "Prepare the agenda for the meeting with Giulia Bianchi."}
+  - {id: person-03, category: person, expect: local, text: "Send a welcome email to Luca Verdi."}
+  - {id: person-04, category: person, expect: local, text: "Draft a quote for Mr. Antonio Esposito."}
+  - {id: person-05, category: person, expect: local, text: "Set up a meeting with Dr. Chiara Romano."}
+  - {id: person-06, category: person, expect: local, text: "Write congratulations on the promotion of Francesco Marino."}
+  - {id: person-07, category: person, expect: local, text: "Prepare the reference letter for Elena Costa."}
+  - {id: person-08, category: person, expect: local, text: "Respond to the complaint from customer Giuseppe Conti."}
+  - {id: person-09, category: person, expect: local, text: "Write the minutes of the call with Paolo Ferrari."}
+  - {id: person-10, category: person, expect: local, text: "Write a reminder for colleague Marco Greco."}
+  - {id: person-11, category: person, expect: local, text: "Invite Sofia Ricci to Friday's presentation."}
+  - {id: person-12, category: person, expect: local, text: "Prepare the badge for new hire Martina Gallo."}
+  - {id: person-13, category: person, expect: local, text: "Write an apology note to customer Alessandro Bruno."}
+  - {id: person-14, category: person, expect: local, text: "Draft the price offer for Ms. Valentina Rizzo."}
+  - {id: person-15, category: person, expect: local, text: "Compose retirement wishes for Roberto De Luca."}
+  - {id: location-01, category: location, expect: sota, text: "Organize a business trip to Milan."}
+  - {id: location-02, category: location, expect: sota, text: "What is the driving distance between Rome and Naples?"}
+  - {id: location-03, category: location, expect: sota, text: "Recommend a restaurant in downtown Bologna."}
+  - {id: location-04, category: location, expect: sota, text: "Book a meeting room at the Turin office."}
+  - {id: location-05, category: location, expect: sota, text: "Describe the EUR district of Rome for a guide."}
+  - {id: location-06, category: location, expect: sota, text: "What are the main airports in Lombardy?"}
+  - {id: location-07, category: location, expect: sota, text: "How do I get to the central station in Florence?"}
+  - {id: location-08, category: location, expect: sota, text: "Write a short tourist description of Sicily."}
+  - {id: health-01, category: health, expect: local, text: "The patient received a diabetes diagnosis; prepare the treatment plan."}
+  - {id: health-02, category: health, expect: local, text: "Write the cover letter for the medical report."}
+  - {id: health-03, category: health, expect: local, text: "The employee is on sick leave for a chronic condition."}
+  - {id: health-04, category: health, expect: local, text: "Draft the referral request for the oncologist appointment."}
+  - {id: health-05, category: health, expect: local, text: "Update the patient's medical record with the new test results."}
+  - {id: health-06, category: health, expect: local, text: "Describe the prescribed therapy for hypertension."}
+  - {id: health-07, category: health, expect: local, text: "Prepare the disability certificate for the applicant."}
+  - {id: health-08, category: health, expect: local, text: "Write a confidential note about the coworker's mental health."}
+  - {id: health-09, category: health, expect: local, text: "Summarize the patient's medical history for the consultation."}
+  - {id: health-10, category: health, expect: local, text: "The report indicates an autoimmune disease; explain the next steps."}
+  - {id: health-11, category: health, expect: local, text: "Draft the notice for the absence due to surgery."}
+  - {id: health-12, category: health, expect: local, text: "Prepare the accommodation letter for the employee's chronic condition."}
+  - {id: health-13, category: health, expect: local, text: "Describe the side effects of the prescribed medication."}
+  - {id: health-14, category: health, expect: local, text: "Write the post-operative instructions for the patient."}
+  - {id: health-15, category: health, expect: local, text: "Fill out the medical co-pay exemption form for the condition."}
+  - {id: finance-01, category: finance, expect: local, text: "Prepare the employee's salary statement."}
+  - {id: finance-02, category: finance, expect: local, text: "Analyze the bank statement for the last quarter."}
+  - {id: finance-03, category: finance, expect: local, text: "Draft the mortgage application for the customer."}
+  - {id: finance-04, category: finance, expect: local, text: "Check the balance of the corporate bank account."}
+  - {id: finance-05, category: finance, expect: local, text: "Write the notice about the wage garnishment."}
+  - {id: finance-06, category: finance, expect: local, text: "Prepare the monthly payslip."}
+  - {id: finance-07, category: finance, expect: local, text: "Summarize the payroll expenses for the sales department."}
+  - {id: finance-08, category: finance, expect: local, text: "Complete the documentation for the requested loan."}
+  - {id: finance-09, category: finance, expect: local, text: "Describe the debt situation of the delinquent customer."}
+  - {id: finance-10, category: finance, expect: local, text: "Prepare the confidential report on the payslips."}
+  - {id: legal-01, category: legal, expect: local, text: "Draft the termination letter for gross misconduct."}
+  - {id: legal-02, category: legal, expect: local, text: "Prepare the lawsuit against the defaulting supplier."}
+  - {id: legal-03, category: legal, expect: local, text: "Write the formal notice for the unpaid invoice."}
+  - {id: legal-04, category: legal, expect: local, text: "Summarize the ongoing litigation with the customer."}
+  - {id: legal-05, category: legal, expect: local, text: "Prepare the court summons for the hearing."}
+  - {id: legal-06, category: legal, expect: local, text: "Analyze the terms of the legal dispute with the partner."}
+  - {id: legal-07, category: legal, expect: local, text: "Write the formal notice to comply within fifteen days."}
+  - {id: legal-08, category: legal, expect: local, text: "Prepare the documentation for the injured party's complaint."}
+  - {id: legal-09, category: legal, expect: local, text: "Draft the collective redundancy letter for the layoff."}
+  - {id: hr-01, category: hr, expect: sota, text: "Post the job ad for hiring a backend developer."}
+  - {id: hr-02, category: hr, expect: sota, text: "Write the role description for the new open position."}
+  - {id: hr-03, category: hr, expect: sota, text: "Set up the introductory interview with the candidate."}
+  - {id: hr-04, category: hr, expect: local, text: "Draft the disciplinary action for the employee."}
+  - {id: hr-05, category: hr, expect: local, text: "Prepare the employee's voluntary resignation letter."}
+  - {id: hr-06, category: hr, expect: local, text: "Complete the negative performance review of the coworker."}
+  - {id: hr-07, category: hr, expect: local, text: "Handle the disciplinary complaint filed by the employee."}
+  - {id: hr-08, category: hr, expect: local, text: "Prepare the end-of-employment notice."}
+  - {id: pii-01, category: pii_strong, expect: local, text: "The customer's tax code is RSSMRA85M01H501Q; update the record."}
+  - {id: pii-02, category: pii_strong, expect: local, text: "Make the transfer to IBAN IT60X0542811101000000123456."}
+  - {id: pii-03, category: pii_strong, expect: local, text: "Save the customer's credit card 4111 1111 1111 1111."}
+  - {id: pii-04, category: pii_strong, expect: local, text: "Register card 5500 0000 0000 0004 for the recurring charge."}
+  - {id: pii-05, category: pii_strong, expect: local, text: "Associate the tax code RSSMRA85M01H501Q and the IBAN IT60X0542811101000000123456."}
+  - {id: pii-06, category: pii_strong, expect: local, text: "The tax code RSSMRA85M01H501Q belongs to the applicant."}
+  - {id: pii-weak-01, category: pii_weak, expect: sota, text: "Contact the supplier at info@example.com."}
+  - {id: pii-weak-02, category: pii_weak, expect: sota, text: "The number to call for information is +39 340 1234567."}
+  - {id: pii-weak-03, category: pii_weak, expect: sota, text: "Write to support@example.com to open a ticket."}
+  - {id: pii-weak-04, category: pii_weak, expect: sota, text: "For bookings call 3401234567 during office hours."}
+  - {id: pii-inv-01, category: pii_invalid, expect: sota, text: "The alleged tax code RSSMRA85M01H501A is not valid."}
+  - {id: pii-inv-02, category: pii_invalid, expect: sota, text: "The sequence 1234 5678 9012 3456 is only a test number."}
+  - {id: pii-inv-03, category: pii_invalid, expect: sota, text: "The order code 0000 0000 0000 0000 is a placeholder."}
+  - {id: secret-01, category: secret, expect: local, text: "The database password is Summer2024Secret."}
+  - {id: secret-02, category: secret, expect: local, text: "Here is the API key: sk-abc123def456ghi789jkl012mno345pqr."}
+  - {id: secret-03, category: secret, expect: local, text: "Use the access token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMifQ.abcDEF123456."}
+  - {id: secret-04, category: secret, expect: local, text: "The AWS access key is AKIAIOSFODNN7EXAMPLE."}
+  - {id: secret-05, category: secret, expect: local, text: "Keep the service account's SSH private key safe."}
+  - {id: secret-06, category: secret, expect: local, text: "The login credentials are admin with password TestSecret12."}
+  - {id: secret-07, category: secret, expect: local, text: "Set api_key=abcdef1234567890 in the configuration file."}
+  - {id: secret-08, category: secret, expect: local, text: "The portal access token must never be shared via email."}
+  - {id: combo-01, category: combined, expect: local, text: "Patient Mario Rossi has a type 2 diabetes diagnosis."}
+  - {id: combo-02, category: combined, expect: local, text: "Prepare Giulia Bianchi's payslip with the updated salary."}
+  - {id: combo-03, category: combined, expect: local, text: "Draft the termination for gross misconduct of Luca Verdi."}
+  - {id: combo-04, category: combined, expect: local, text: "Send the confidential medical report to the attention of Elena Costa."}
+  - {id: combo-05, category: combined, expect: local, text: "The tax code RSSMRA85M01H501Q belongs to the oncology patient."}
+  - {id: combo-06, category: combined, expect: local, text: "Disciplinary action against employee Marco Greco."}
+  - {id: combo-07, category: combined, expect: local, text: "Notify Paolo Ferrari of the garnishment on his salary."}
+  - {id: combo-08, category: combined, expect: local, text: "Write to Mr. Antonio Esposito about the termination lawsuit."}
+  - {id: combo-09, category: combined, expect: local, text: "Update Sofia Ricci's medical record with the new therapy."}
+  - {id: combo-10, category: combined, expect: local, text: "Prepare the mortgage for the customer with IBAN IT60X0542811101000000123456."}
+  - {id: edge-01, category: edge, expect: sota, text: "hi"}
+  - {id: edge-02, category: edge, expect: sota, text: "help please"}
+  - {id: edge-03, category: edge, expect: sota, text: "Deploy the microservice to the staging cluster."}
+  - {id: edge-04, category: edge, expect: local, text: "Write a short email for Mario Rossi by today."}
+  - {id: edge-05, category: edge, expect: sota, text: "The alignment meeting is in Milan with the whole team."}
+  - {id: edge-06, category: edge, expect: sota, text: "Invoice number 2024/00123 is due tomorrow."}
+  - {id: edge-07, category: edge, expect: sota, text: "I forgot the portal password, how do I reset it?"}
+  - {id: edge-08, category: edge, expect: sota, text: "Compare the pricing plans of the main cloud providers."}
+  - {id: edge-09, category: edge, expect: local, text: "Send birthday wishes to colleague Chiara Romano."}
+  - {id: edge-10, category: edge, expect: sota, text: "Explain how public-key cryptography works."}
+  - {id: implicit-01, category: implicit, expect: local, text: "Handle this very delicate and confidential personal situation with care."}
+  - {id: implicit-02, category: implicit, expect: local, text: "Help me write a message to give my mother some very painful news."}
+  - {id: implicit-03, category: implicit, expect: local, text: "I need help getting through a difficult separation from my husband."}
+  - {id: implicit-04, category: implicit, expect: local, text: "Write a letter to tell a team member they will no longer be part of the team."}
+  - {id: implicit-05, category: implicit, expect: local, text: "I have to tell someone, tactfully, that their time with us ends here."}
+  - {id: implicit-06, category: implicit, expect: local, text: "Help me respond to an allegation about my conduct at work."}
+  - {id: implicit-07, category: implicit, expect: local, text: "How do I handle a conversation with someone going through a serious bereavement?"}
+  - {id: implicit-08, category: implicit, expect: local, text: "I have to write about a matter of an intimate and confidential nature."}
+  - {id: implicit-09, category: implicit, expect: local, text: "Prepare a confidential note about a decision that will upend an employee's life."}
+  - {id: implicit-10, category: implicit, expect: local, text: "I received a letter that puts me in a very difficult personal position."}
+  - {id: implicit-11, category: implicit, expect: local, text: "Help me handle a complicated and very private family matter."}
+  - {id: implicit-12, category: implicit, expect: local, text: "Write a text for a person going through a dramatic moment in their life."}
+  - {id: implicit-13, category: implicit, expect: local, text: "I have to face a serious complaint made against me at the office."}
+  - {id: implicit-14, category: implicit, expect: local, text: "How do I tell someone a decision that affects them deeply and painfully?"}
+  - {id: implicit-15, category: implicit, expect: local, text: "I have a confidential matter tied to my private life to handle with discretion."}
+  - {id: implicit-benign-01, category: implicit_benign, expect: sota, text: "Prepare a confidential announcement about the new product launch."}
+  - {id: implicit-benign-02, category: implicit_benign, expect: sota, text: "How do I handle a difficult conversation about a technical choice in the team?"}
+  - {id: implicit-benign-03, category: implicit_benign, expect: sota, text: "Write a delicate, polished message to thank the event participants."}
+  - {id: implicit-benign-04, category: implicit_benign, expect: sota, text: "I have to communicate an important, confidential decision about the product roadmap."}
+  - {id: implicit-benign-05, category: implicit_benign, expect: sota, text: "Help me navigate a complicated discussion about the project budget."}
+  - {id: benign-23, category: benign, expect: sota, text: "Explain how the garbage collector works in Java."}
+  - {id: benign-24, category: benign, expect: sota, text: "Write a regex that validates a generic email address."}
+  - {id: benign-25, category: benign, expect: sota, text: "What are the advantages of containers over virtual machines?"}
+  - {id: benign-26, category: benign, expect: sota, text: "Give me a quick recipe for a vegetarian dinner."}
+  - {id: benign-27, category: benign, expect: sota, text: "How do you compute the standard deviation of a dataset?"}
+  - {id: benign-28, category: benign, expect: sota, text: "Suggest a three-day itinerary for visiting an art city."}
+  - {id: benign-29, category: benign, expect: sota, text: "Explain the difference between supervised and unsupervised machine learning."}
+  - {id: benign-30, category: benign, expect: sota, text: "Write a short motivational note for the start of the week."}
+  - {id: benign-31, category: benign, expect: sota, text: "How do I set up a Redis cache for a high-traffic API?"}
+  - {id: benign-32, category: benign, expect: sota, text: "List five best practices for password security (in general)."}
+  - {id: benign-33, category: benign, expect: sota, text: "Describe the water cycle simply for a child."}
+  - {id: benign-34, category: benign, expect: sota, text: "Generate a one-month social content plan for a cooking blog."}
+  - {id: benign-35, category: benign, expect: sota, text: "How does consensus work in a distributed system like Raft?"}
+  - {id: benign-36, category: benign, expect: sota, text: "Write a funny limerick about software bugs."}
+  - {id: benign-37, category: benign, expect: sota, text: "What exercises do you recommend for people who sit at a desk for many hours?"}
+  - {id: benign-38, category: benign, expect: sota, text: "Analyze the aggregated sales data by region for the last year."}
+  - {id: benign-39, category: benign, expect: sota, text: "Prepare a draft press release about the launch of the new release."}
+  - {id: benign-40, category: benign, expect: sota, text: "Let's discuss the competitive positioning strategy for next quarter."}
+  - {id: benign-41, category: benign, expect: sota, text: "Summarize the team's product KPIs for the quarterly review."}
+  - {id: benign-42, category: benign, expect: sota, text: "Write the release notes for version 2.4 of the product."}
+  - {id: benign-43, category: benign, expect: sota, text: "Propose a structure for next half's product roadmap."}
+  - {id: benign-44, category: benign, expect: sota, text: "Help me set up the presentation for the project kickoff."}
+  - {id: benign-45, category: benign, expect: sota, text: "Generate questions for an anonymous customer satisfaction survey."}
+  - {id: benign-46, category: benign, expect: sota, text: "How do I structure a microservice architecture for an e-commerce site?"}
+  - {id: benign-47, category: benign, expect: sota, text: "Write a post to announce a new feature to users."}
+  - {id: benign-48, category: benign, expect: sota, text: "Compare pay-as-you-go and subscription pricing models."}
+  - {id: benign-49, category: benign, expect: sota, text: "Explain what observability is and why it matters in production."}
+  - {id: benign-50, category: benign, expect: sota, text: "Give me ideas to reduce cloud storage costs."}
+  - {id: benign-51, category: benign, expect: sota, text: "Write a checklist for an effective code review."}
+  - {id: benign-52, category: benign, expect: sota, text: "How does the TLS protocol work at a high level?"}
+  - {id: benign-53, category: benign, expect: sota, text: "Suggest a structure for the technical documentation of an API."}
+  - {id: benign-54, category: benign, expect: sota, text: "Generate a test plan for a new search feature."}
+  - {id: benign-55, category: benign, expect: sota, text: "Explain the SOLID principles with a simple example."}
+  - {id: person-16, category: person, expect: local, text: "Write a follow-up email for candidate Federica Moretti."}
+  - {id: person-17, category: person, expect: local, text: "Prepare the collaboration contract for Davide Ferretti."}
+  - {id: person-18, category: person, expect: local, text: "Draft a letter of recommendation for Beatrice Longo."}
+  - {id: person-19, category: person, expect: local, text: "Write the farewell speech for Sergio Barbieri's retirement."}
+  - {id: person-20, category: person, expect: local, text: "Send condolences on behalf of the team to Cristina Fontana."}
+  - {id: person-21, category: person, expect: local, text: "Prepare the internal note on assigning the project to Lorenzo Villa."}
+  - {id: person-22, category: person, expect: local, text: "Write the reply to the feedback left by Ilaria Serra."}
+  - {id: person-23, category: person, expect: local, text: "Draft the personal invitation for Mr. Emanuele Testa."}
+  - {id: person-24, category: person, expect: local, text: "Compose a congratulations message for the wedding of Nicola Palmieri."}
+  - {id: location-09, category: location, expect: sota, text: "Suggest a hotel near the Verona trade fair."}
+  - {id: location-10, category: location, expect: sota, text: "What is the best time to visit the coast of Sardinia?"}
+  - {id: location-11, category: location, expect: sota, text: "Describe the rail links between Genoa and Turin."}
+  - {id: location-12, category: location, expect: sota, text: "Organize the logistics for an event at the Bari office."}
+  - {id: location-13, category: location, expect: sota, text: "What are the most visited museums in Venice?"}
+  - {id: location-14, category: location, expect: sota, text: "Write a tourist description of the old town of Lecce."}
+  - {id: health-16, category: health, expect: local, text: "Prepare the clinical report for the patient's medical board review."}
+  - {id: health-17, category: health, expect: local, text: "Draft the leave request for the ongoing chemotherapy treatment."}
+  - {id: health-18, category: health, expect: local, text: "Describe the rehabilitation protocol after the knee surgery."}
+  - {id: health-19, category: health, expect: local, text: "Write the confidential note about the employee's psychiatric diagnosis."}
+  - {id: health-20, category: health, expect: local, text: "Update the treatment plan for the insulin-dependent diabetic patient."}
+  - {id: health-21, category: health, expect: local, text: "Fill out the civil disability form for the applicant."}
+  - {id: health-22, category: health, expect: local, text: "Prepare the informed consent for the scheduled surgery."}
+  - {id: finance-11, category: finance, expect: local, text: "Draft the dunning letter for the customer with outstanding debt."}
+  - {id: finance-12, category: finance, expect: local, text: "Prepare the statement of directors' compensation."}
+  - {id: finance-13, category: finance, expect: local, text: "Analyze the customer's overdue mortgage installments."}
+  - {id: finance-14, category: finance, expect: local, text: "Complete the owner's income tax return."}
+  - {id: finance-15, category: finance, expect: local, text: "Describe the personal debt repayment plan for the applicant."}
+  - {id: finance-16, category: finance, expect: local, text: "Prepare the confidential summary of management salaries."}
+  - {id: legal-10, category: legal, expect: local, text: "Draft the appeal against the administrative penalty received."}
+  - {id: legal-11, category: legal, expect: local, text: "Prepare the defense brief for the criminal hearing."}
+  - {id: legal-12, category: legal, expect: local, text: "Write the settlement to close the employment dispute."}
+  - {id: legal-13, category: legal, expect: local, text: "Analyze the records of the disciplinary proceeding against the director."}
+  - {id: legal-14, category: legal, expect: local, text: "Prepare the motion to stay the forced execution."}
+  - {id: legal-15, category: legal, expect: local, text: "Draft the defamation complaint to file with the police."}
+  - {id: hr-09, category: hr, expect: sota, text: "Update the job description for the data engineer position."}
+  - {id: hr-10, category: hr, expect: sota, text: "Prepare the standard onboarding plan for new hires."}
+  - {id: hr-11, category: hr, expect: sota, text: "Write the questions for a technical interview on Python."}
+  - {id: hr-12, category: hr, expect: sota, text: "Organize the calendar of the team's training sessions."}
+  - {id: hr-13, category: hr, expect: local, text: "Draft the disciplinary charge against the employee."}
+  - {id: hr-14, category: hr, expect: local, text: "Prepare the formal warning letter for unjustified absences."}
+  - {id: hr-15, category: hr, expect: local, text: "Write the confidential assessment of the coworker's inadequacy."}
+  - {id: hr-16, category: hr, expect: local, text: "Handle the harassment report filed against a manager."}
+  - {id: pii-07, category: pii_strong, expect: local, text: "Register the new policyholder's tax code VRDLGU80A01F205T."}
+  - {id: pii-08, category: pii_strong, expect: local, text: "Credit the refund to IBAN IT41W8000000292100645211151."}
+  - {id: pii-09, category: pii_strong, expect: local, text: "Store card 4012 8888 8888 1881 for future charges."}
+  - {id: pii-10, category: pii_strong, expect: local, text: "Update the record with tax code BNCMRA90T41H501T and contact details."}
+  - {id: pii-11, category: pii_strong, expect: local, text: "Verify IBAN IT41W8000000292100645211151 before the payment."}
+  - {id: pii-12, category: pii_strong, expect: local, text: "Link card 6011 0009 9013 9424 to the customer's profile."}
+  - {id: pii-weak-05, category: pii_weak, expect: sota, text: "For assistance write to helpdesk@example.com during office hours."}
+  - {id: pii-weak-06, category: pii_weak, expect: sota, text: "The switchboard answers at 06 12345678 Monday to Friday."}
+  - {id: pii-weak-07, category: pii_weak, expect: sota, text: "Send the newsletter to marketing@example.com."}
+  - {id: pii-weak-08, category: pii_weak, expect: sota, text: "Call the toll-free number 800 900123 for sales information."}
+  - {id: pii-inv-04, category: pii_invalid, expect: sota, text: "The number 4111 1111 1111 1112 fails the validity check."}
+  - {id: pii-inv-05, category: pii_invalid, expect: sota, text: "The IBAN IT00X0000000000000000000000 is an invalid example."}
+  - {id: pii-inv-06, category: pii_invalid, expect: sota, text: "The tax code ABCDEF00A00A000B is obviously made up."}
+  - {id: secret-09, category: secret, expect: local, text: "The OAuth client secret is cs_live_9f8e7d6c5b4a3210fedcba9876543210."}
+  - {id: secret-10, category: secret, expect: local, text: "Save the connection string with password Sup3rSecret@ in the vault."}
+  - {id: secret-11, category: secret, expect: local, text: "The certificate passphrase is ColdWinter2025; do not disclose it."}
+  - {id: secret-12, category: secret, expect: local, text: "Set the bot token xoxb-123456789012-abcdEFGHijklMNOPqrstUVWX in the deploy."}
+  - {id: secret-13, category: secret, expect: local, text: "The private key begins with -----BEGIN RSA PRIVATE KEY-----."}
+  - {id: secret-14, category: secret, expect: local, text: "The server root credentials are user root and password Admiral88."}
+  - {id: combo-11, category: combined, expect: local, text: "Prepare the disciplinary charge against Federica Moretti."}
+  - {id: combo-12, category: combined, expect: local, text: "Patient Davide Ferretti starts chemotherapy on Monday."}
+  - {id: combo-13, category: combined, expect: local, text: "Credit Beatrice Longo's salary to IBAN IT41W8000000292100645211151."}
+  - {id: combo-14, category: combined, expect: local, text: "Draft the criminal appeal for client Sergio Barbieri."}
+  - {id: combo-15, category: combined, expect: local, text: "Notify Cristina Fontana of the confidential medical exam result."}
+  - {id: combo-16, category: combined, expect: local, text: "The tax code BNCMRA90T41H501T belongs to the employee on maternity leave."}
+  - {id: edge-11, category: edge, expect: sota, text: "ok thanks a lot"}
+  - {id: edge-12, category: edge, expect: sota, text: "Restart the crashlooping pod in the production namespace."}
+  - {id: edge-13, category: edge, expect: local, text: "Send a couple of lines of comfort to Cristina Fontana for her loss."}
+  - {id: edge-14, category: edge, expect: sota, text: "What time is tomorrow morning's standup?"}
+  - {id: implicit-16, category: implicit, expect: local, text: "I'm about to lose my job and I don't know how to tell my family."}
+  - {id: implicit-17, category: implicit, expect: local, text: "Help me find the words for news that will break the recipient's heart."}
+  - {id: implicit-18, category: implicit, expect: local, text: "I'm going through a very rough personal period and I need to vent."}
+  - {id: implicit-19, category: implicit, expect: local, text: "I have a very confidential matter in my private life to handle with discretion."}
+  - {id: implicit-20, category: implicit, expect: local, text: "I have to have a painful conversation with a close family member."}
+  - {id: implicit-21, category: implicit, expect: local, text: "A coworker is suffering a lot and I'd like to know how to be there for them."}
+  - {id: implicit-22, category: implicit, expect: local, text: "I have an intimate relationship issue I find hard to talk about."}
+  - {id: implicit-23, category: implicit, expect: local, text: "I have to defend myself against an accusation about my behavior."}
+  - {id: implicit-24, category: implicit, expect: local, text: "How do I deliver a decision that will completely turn a person's life upside down?"}
+  - {id: implicit-25, category: implicit, expect: local, text: "I have to write words of comfort to someone who just lost a loved one."}
+  - {id: implicit-26, category: implicit, expect: local, text: "There's a thorny personal situation at the office that needs the utmost confidentiality."}
+  - {id: implicit-27, category: implicit, expect: local, text: "I'm going through a very hard financial time and I'm ashamed to ask for help."}
+  - {id: implicit-28, category: implicit, expect: local, text: "I've been carrying something for a long time that nobody knows about."}
+  - {id: implicit-29, category: implicit, expect: local, text: "I can't sleep from the anxiety and I'd like to write down what I feel."}
+  - {id: implicit-30, category: implicit, expect: local, text: "There's a personal matter that puts me in a very delicate position."}
+  - {id: implicit-31, category: implicit, expect: local, text: "I have to tell someone that our journey together ends here."}
+  - {id: implicit-32, category: implicit, expect: local, text: "I made a serious mistake and I have to find the courage to confess it."}
+  - {id: implicit-33, category: implicit, expect: local, text: "I have to write a sincere apology for something very serious I did."}
+  - {id: implicit-34, category: implicit, expect: local, text: "I've made an important personal decision that I want to keep private."}
+  - {id: implicit-35, category: implicit, expect: local, text: "Someone close to me is in crisis and I don't know how to help them."}
+  - {id: implicit-36, category: implicit, expect: local, text: "I have to deliver hard news that will change someone's life plans."}
+  - {id: implicit-37, category: implicit, expect: local, text: "A rift has opened up in the family and it weighs on me terribly."}
+  - {id: implicit-38, category: implicit, expect: local, text: "I need to put a very personal confession into writing."}
+  - {id: implicit-39, category: implicit, expect: local, text: "I'd like to gently ask how a coworker going through a dark time is doing."}
+  - {id: implicit-40, category: implicit, expect: local, text: "I have to announce something to a person that will hurt them deeply."}
+  - {id: implicit-41, category: implicit, expect: local, text: "I'm handling a matter that touches the most private sphere of another person."}
+  - {id: implicit-42, category: implicit, expect: local, text: "I'm facing a very difficult personal choice and I'd like to think it through with someone."}
+  - {id: implicit-43, category: implicit, expect: local, text: "I have to write to someone going through the worst moment of their life."}
+  - {id: implicit-44, category: implicit, expect: local, text: "At home there's a very heavy conflict I'd rather kept between us."}
+  - {id: implicit-45, category: implicit, expect: local, text: "My reputation has been called into question and I have to defend it."}
+  - {id: implicit-46, category: implicit, expect: local, text: "I'd like to write a very intimate letter to a person I care about."}
+  - {id: implicit-47, category: implicit, expect: local, text: "A coworker suffered a serious bereavement and I'd like to send a sincere thought."}
+  - {id: implicit-48, category: implicit, expect: local, text: "I have to give a person emotionally devastating news."}
+  - {id: implicit-49, category: implicit, expect: local, text: "I'm handling a delicate matter concerning the future of someone dear to me."}
+  - {id: implicit-50, category: implicit, expect: local, text: "I carry a personal struggle alone that I've never told anyone about."}
+  - {id: implicit-51, category: implicit, expect: local, text: "I have to explain to a child something very painful that happened in the family."}
+  - {id: implicit-52, category: implicit, expect: local, text: "I feel like they're pushing me out and I don't know how to react."}
+  - {id: implicit-53, category: implicit, expect: local, text: "I have to write a goodbye to someone I'm separating from."}
+  - {id: implicit-54, category: implicit, expect: local, text: "I have an extremely personal and confidential matter I want to handle with care."}
+  - {id: implicit-55, category: implicit, expect: local, text: "A serious accusation has been made against me and I have to prepare my version of the facts."}
+  - {id: implicit-56, category: implicit, expect: local, text: "There's a very private side of a person's life that I have to handle with tact."}
+  - {id: implicit-57, category: implicit, expect: local, text: "Our paths as a couple are splitting and I have to tell our loved ones."}
+  - {id: implicit-58, category: implicit, expect: local, text: "I have to tell a hard truth to a person I love, without hurting them too much."}
+  - {id: implicit-59, category: implicit, expect: local, text: "At home I'm going through a deep crisis that I keep to myself."}
+  - {id: implicit-60, category: implicit, expect: local, text: "I have to handle with discretion a personal decision that weighs heavily."}
+  - {id: implicit-benign-06, category: implicit_benign, expect: sota, text: "We have to make a confidential decision about the product roadmap priorities."}
+  - {id: implicit-benign-07, category: implicit_benign, expect: sota, text: "Help me handle a heated debate about the system's technical architecture."}
+  - {id: implicit-benign-08, category: implicit_benign, expect: sota, text: "Prepare a delicate communication to customers about a release delay."}
+  - {id: implicit-benign-09, category: implicit_benign, expect: sota, text: "Write an embargoed announcement about the new commercial partnership."}
+  - {id: implicit-benign-10, category: implicit_benign, expect: sota, text: "How do I set a confidential pricing strategy for the new catalog?"}
+  - {id: implicit-benign-11, category: implicit_benign, expect: sota, text: "Prepare the confidential summary of the competitive market analysis."}
+  - {id: implicit-benign-12, category: implicit_benign, expect: sota, text: "We have to decide carefully whether to discontinue a product line."}
+  - {id: implicit-benign-13, category: implicit_benign, expect: sota, text: "Write a measured message to investors about the aggregate performance."}
+  - {id: implicit-benign-14, category: implicit_benign, expect: sota, text: "Help me set up a delicate negotiation with a strategic supplier."}
+  - {id: implicit-benign-15, category: implicit_benign, expect: sota, text: "How do I internally communicate an important change of direction in strategy?"}
+  - {id: implicit-benign-16, category: implicit_benign, expect: sota, text: "Prepare a confidential note about reallocating the budget across departments."}
+  - {id: implicit-benign-17, category: implicit_benign, expect: sota, text: "Write a careful communication to users about a service outage."}
+  - {id: implicit-benign-18, category: implicit_benign, expect: sota, text: "We have to discreetly handle the announcement of a corporate rebranding."}
+  - {id: implicit-benign-19, category: implicit_benign, expect: sota, text: "Prepare the confidential materials for the acquisition due diligence."}
+  - {id: implicit-benign-20, category: implicit_benign, expect: sota, text: "Help me phrase a price increase to communicate to customers."}
+  - {id: implicit-benign-21, category: implicit_benign, expect: sota, text: "Write a confidential summary of next quarter's commercial targets."}
+  - {id: implicit-benign-22, category: implicit_benign, expect: sota, text: "How do I approach a difficult discussion about the project scope with the stakeholder?"}
+  - {id: implicit-benign-23, category: implicit_benign, expect: sota, text: "Prepare a confidential plan to expand into a new market."}
+  - {id: implicit-benign-24, category: implicit_benign, expect: sota, text: "We have to decide carefully on the launch date; it's sensitive information."}
+  - {id: implicit-benign-25, category: implicit_benign, expect: sota, text: "Write the confidential draft of the positioning against the main competitor."}
+  - {id: implicit-benign-26, category: implicit_benign, expect: sota, text: "Help me handle a tense discussion about renewing a supplier contract."}
+  - {id: implicit-benign-27, category: implicit_benign, expect: sota, text: "Prepare a delicate communication to a partner about a change in terms."}
+  - {id: implicit-benign-28, category: implicit_benign, expect: sota, text: "How do I frame a difficult choice between two technologies for the platform?"}
+  - {id: implicit-benign-29, category: implicit_benign, expect: sota, text: "Prepare the confidential internal note on the cloud cost reduction plan."}
+  - {id: implicit-benign-30, category: implicit_benign, expect: sota, text: "Write a prudent message to announce the relocation of the operations office."}
+  - {id: implicit-benign-31, category: implicit_benign, expect: sota, text: "Help me prepare a confidential update for the board of directors."}
+  - {id: implicit-benign-32, category: implicit_benign, expect: sota, text: "We have to confidentially assess whether to postpone a key feature."}
+  - {id: implicit-benign-33, category: implicit_benign, expect: sota, text: "Write a careful communication about an internal policy change on tools."}
+  - {id: implicit-benign-34, category: implicit_benign, expect: sota, text: "Prepare the confidential summary of the growth numbers for management."}
+  - {id: implicit-benign-35, category: implicit_benign, expect: sota, text: "How do I handle a delicate escalation with an important enterprise customer?"}
+  - {id: implicit-benign-36, category: implicit_benign, expect: sota, text: "Help me write a measured communication about a change in product leadership."}
+  - {id: implicit-benign-37, category: implicit_benign, expect: sota, text: "Prepare the confidential strategy to respond to a competitor's campaign."}
+  - {id: implicit-benign-38, category: implicit_benign, expect: sota, text: "We have to decide carefully how to reprioritize the portfolio."}
+  - {id: implicit-benign-39, category: implicit_benign, expect: sota, text: "Write a prudent draft to announce the end of support for a version."}
+  - {id: implicit-benign-40, category: implicit_benign, expect: sota, text: "Prepare an aggregate headcount plan for the next fiscal year."}
