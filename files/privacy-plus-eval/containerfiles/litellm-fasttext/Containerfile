@@ -1,0 +1,34 @@
+# =============================================================================
+# Custom LiteLLM image — fastText language detection (privacy-plus).
+# -----------------------------------------------------------------------------
+# The privacy-plus language-detect step runs inside litellm/privacy_scoring.py,
+# which lives in the LiteLLM pod — NOT in the Presidio one. fastText is a COMPILED
+# dependency + a model file, so it cannot ride in the ConfigMap that carries the
+# .py hooks — it is baked here. The hook .py themselves STILL come from the
+# ConfigMap (mounted at /app/litellm), so you can iterate on them without
+# rebuilding this image.
+#
+# The fastText LID model lid.176.ftz is licensed CC BY-SA 3.0.
+#
+# Prepare the build context first (the model is NOT committed to git):
+#   curl -LO https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.ftz
+#
+# Prebuilt: quay.io/asalvati/litellm-privacy-plus:0.1
+# =============================================================================
+FROM ghcr.io/berriai/litellm-non_root:v1.91.1
+
+USER 0
+
+# fastText runtime. NOTE: this base image (Wolfi + uv venv, Python 3.13) ships NO pip,
+# so bootstrap it with ensurepip first. We use `fasttext-predict` (predict-only, MIT):
+# it publishes prebuilt cp313 manylinux wheels, so NO C++ toolchain is needed — unlike
+# `fasttext` / `fasttext-wheel`, which lack a cp313 wheel and try to compile from source.
+RUN python -m ensurepip && python -m pip install --no-cache-dir fasttext-predict
+
+# fastText language-id model: 176 languages, ~917 KB. Fetched at BUILD time (build
+# host has egress); the running pod stays no-egress. Path matches
+# policy/privacy-plus.yaml -> ner.lang_detect.model_path.
+COPY lid.176.ftz /opt/models/lid.176.ftz
+
+# Restore the base image's non-root user (65534 / nobody).
+USER 65534

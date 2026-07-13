@@ -1,0 +1,14 @@
+# Presidio NLP engine configuration — English + Italian (privacy-plus C1).
+# Consumed at runtime via the NLP_CONF_FILE env var (set in the Containerfile) and
+# at build time by install_nlp_models.py. Presidio derives supported_languages from
+# the `models` list below -> [en, it].
+#
+# Model choice: this lab uses it_core_news_md (see the blog post for the md->lg
+# trade-off). en_core_web_lg is the model bundled in the base image; if the base
+# ships a different English model, match model_name here.
+nlp_engine_name: spacy
+models:
+  - lang_code: en
+    model_name: en_core_web_lg
+  - lang_code: it
+    model_name: it_core_news_md

@@ -1,0 +1,333 @@
+run_label,lang,id,category,expect,decision,correct,gate,privacy_score,classifier_fired,signals,latency_ms
+rules-c1:gliner2,it,benign-01,benign,sota,sota,1,privacy,0.0000,0,no-signal,77.4
+rules-c1:gliner2,it,benign-02,benign,sota,local,0,privacy,0.6000,0,PERSON@0.73:0.60,127.0
+rules-c1:gliner2,it,benign-03,benign,sota,sota,1,privacy,0.0000,0,no-signal,28.2
+rules-c1:gliner2,it,benign-04,benign,sota,sota,1,privacy,0.4000,0,LOCATION@0.97:0.40,27.3
+rules-c1:gliner2,it,benign-05,benign,sota,sota,1,privacy,0.0000,0,no-signal,29.8
+rules-c1:gliner2,it,benign-06,benign,sota,sota,1,privacy,0.0000,0,no-signal,33.5
+rules-c1:gliner2,it,benign-07,benign,sota,sota,1,privacy,0.0000,0,no-signal,30.5
+rules-c1:gliner2,it,benign-08,benign,sota,sota,1,privacy,0.0000,0,no-signal,29.7
+rules-c1:gliner2,it,benign-09,benign,sota,sota,1,privacy,0.0000,0,no-signal,26.6
+rules-c1:gliner2,it,benign-10,benign,sota,local,0,privacy,0.6000,0,PERSON@0.67:0.60,27.3
+rules-c1:gliner2,it,benign-11,benign,sota,sota,1,privacy,0.0000,0,no-signal,28.6
+rules-c1:gliner2,it,benign-12,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.1
+rules-c1:gliner2,it,benign-13,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.1
+rules-c1:gliner2,it,benign-14,benign,sota,sota,1,privacy,0.0000,0,no-signal,29.0
+rules-c1:gliner2,it,benign-15,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.0
+rules-c1:gliner2,it,benign-16,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.0
+rules-c1:gliner2,it,benign-17,benign,sota,sota,1,privacy,0.0000,0,no-signal,37.7
+rules-c1:gliner2,it,benign-18,benign,sota,sota,1,privacy,0.0000,0,no-signal,28.9
+rules-c1:gliner2,it,benign-19,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.3
+rules-c1:gliner2,it,benign-20,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.5
+rules-c1:gliner2,it,benign-21,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.4
+rules-c1:gliner2,it,benign-22,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.2
+rules-c1:gliner2,it,person-01,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,26.9
+rules-c1:gliner2,it,person-02,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.6
+rules-c1:gliner2,it,person-03,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,27.1
+rules-c1:gliner2,it,person-04,person,local,local,1,privacy,0.6000,0,PERSON@0.99:0.60,27.7
+rules-c1:gliner2,it,person-05,person,local,local,1,privacy,0.6000,0,PERSON@0.99:0.60,28.7
+rules-c1:gliner2,it,person-06,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.2
+rules-c1:gliner2,it,person-07,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.2
+rules-c1:gliner2,it,person-08,person,local,local,1,privacy,0.6000,0,PERSON@0.99:0.60,41.1
+rules-c1:gliner2,it,person-09,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.9
+rules-c1:gliner2,it,person-10,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,29.2
+rules-c1:gliner2,it,person-11,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.7
+rules-c1:gliner2,it,person-12,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.6
+rules-c1:gliner2,it,person-13,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.6
+rules-c1:gliner2,it,person-14,person,local,local,1,privacy,0.6000,0,PERSON@0.99:0.60,29.1
+rules-c1:gliner2,it,person-15,person,local,local,1,privacy,0.6000,0,PERSON@0.99:0.60,28.6
+rules-c1:gliner2,it,location-01,location,sota,sota,1,privacy,0.4000,0,LOCATION@1.00:0.40,27.7
+rules-c1:gliner2,it,location-02,location,sota,sota,1,privacy,0.4000,0,LOCATION@1.00:0.40,28.0
+rules-c1:gliner2,it,location-03,location,sota,sota,1,privacy,0.4000,0,LOCATION@1.00:0.40,26.9
+rules-c1:gliner2,it,location-04,location,sota,sota,1,privacy,0.4000,0,LOCATION@0.99:0.40,27.0
+rules-c1:gliner2,it,location-05,location,sota,sota,1,privacy,0.4000,0,LOCATION@0.99:0.40,28.1
+rules-c1:gliner2,it,location-06,location,sota,sota,1,privacy,0.4000,0,LOCATION@0.99:0.40,41.5
+rules-c1:gliner2,it,location-07,location,sota,sota,1,privacy,0.4000,0,LOCATION@0.98:0.40,27.8
+rules-c1:gliner2,it,location-08,location,sota,sota,1,privacy,0.4000,0,LOCATION@0.96:0.40,27.6
+rules-c1:gliner2,it,health-01,health,local,local,1,privacy,0.8000,0,health:0.80,28.0
+rules-c1:gliner2,it,health-02,health,local,local,1,privacy,0.8000,0,health:0.80,26.6
+rules-c1:gliner2,it,health-03,health,local,local,1,privacy,0.8000,0,health:0.80,28.5
+rules-c1:gliner2,it,health-04,health,local,local,1,privacy,0.8000,0,health:0.80,27.3
+rules-c1:gliner2,it,health-05,health,local,local,1,privacy,0.8000,0,health:0.80,26.6
+rules-c1:gliner2,it,health-06,health,local,local,1,privacy,0.8000,0,health:0.80,27.3
+rules-c1:gliner2,it,health-07,health,local,local,1,privacy,0.8000,0,health:0.80,27.9
+rules-c1:gliner2,it,health-08,health,local,local,1,privacy,0.8000,0,health:0.80,27.5
+rules-c1:gliner2,it,health-09,health,local,local,1,privacy,0.8000,0,health:0.80,26.7
+rules-c1:gliner2,it,health-10,health,local,local,1,privacy,0.8000,0,health:0.80,27.8
+rules-c1:gliner2,it,health-11,health,local,local,1,privacy,0.8000,0,health:0.80,40.1
+rules-c1:gliner2,it,health-12,health,local,local,1,privacy,0.8000,0,health:0.80,29.2
+rules-c1:gliner2,it,health-13,health,local,local,1,privacy,0.8000,0,health:0.80,26.1
+rules-c1:gliner2,it,health-14,health,local,local,1,privacy,0.9200,0,"health:0.80, PERSON@0.69:0.60",27.1
+rules-c1:gliner2,it,health-15,health,local,local,1,privacy,0.8000,0,health:0.80,27.3
+rules-c1:gliner2,it,finance-01,finance,local,local,1,privacy,0.5000,0,finance:0.50,26.6
+rules-c1:gliner2,it,finance-02,finance,local,local,1,privacy,0.5000,0,finance:0.50,27.1
+rules-c1:gliner2,it,finance-03,finance,local,local,1,privacy,0.8000,0,"finance:0.50, PERSON@0.62:0.60",26.4
+rules-c1:gliner2,it,finance-04,finance,local,local,1,privacy,0.5000,0,finance:0.50,28.2
+rules-c1:gliner2,it,finance-05,finance,local,local,1,privacy,0.5000,0,finance:0.50,27.5
+rules-c1:gliner2,it,finance-06,finance,local,local,1,privacy,0.5000,0,finance:0.50,26.6
+rules-c1:gliner2,it,finance-07,finance,local,local,1,privacy,0.5000,0,finance:0.50,27.3
+rules-c1:gliner2,it,finance-08,finance,local,local,1,privacy,0.5000,0,finance:0.50,28.9
+rules-c1:gliner2,it,finance-09,finance,local,local,1,privacy,0.8000,0,"finance:0.50, PERSON@0.77:0.60",40.5
+rules-c1:gliner2,it,finance-10,finance,local,local,1,privacy,0.5000,0,finance:0.50,27.6
+rules-c1:gliner2,it,legal-01,legal,local,local,1,privacy,0.5000,0,legal:0.50,26.8
+rules-c1:gliner2,it,legal-02,legal,local,local,1,privacy,0.5000,0,legal:0.50,26.5
+rules-c1:gliner2,it,legal-03,legal,local,local,1,privacy,0.5000,0,legal:0.50,27.2
+rules-c1:gliner2,it,legal-04,legal,local,local,1,privacy,0.8000,0,"legal:0.50, PERSON@0.62:0.60",26.6
+rules-c1:gliner2,it,legal-05,legal,local,local,1,privacy,0.5000,0,legal:0.50,27.3
+rules-c1:gliner2,it,legal-06,legal,local,local,1,privacy,0.5000,0,legal:0.50,27.3
+rules-c1:gliner2,it,legal-07,legal,local,local,1,privacy,0.5000,0,legal:0.50,27.5
+rules-c1:gliner2,it,legal-08,legal,local,local,1,privacy,0.5000,0,legal:0.50,27.9
+rules-c1:gliner2,it,legal-09,legal,local,local,1,privacy,0.5000,0,legal:0.50,28.7
+rules-c1:gliner2,it,hr-01,hr,sota,sota,1,privacy,0.0000,0,no-signal,27.8
+rules-c1:gliner2,it,hr-02,hr,sota,sota,1,privacy,0.0000,0,no-signal,28.2
+rules-c1:gliner2,it,hr-03,hr,sota,local,0,privacy,0.6000,0,PERSON@0.75:0.60,40.6
+rules-c1:gliner2,it,hr-04,hr,local,local,1,privacy,0.8200,0,"hr:0.55, PERSON@0.70:0.60",26.6
+rules-c1:gliner2,it,hr-05,hr,local,local,1,privacy,0.5500,0,hr:0.55,26.4
+rules-c1:gliner2,it,hr-06,hr,local,local,1,privacy,0.5500,0,hr:0.55,27.3
+rules-c1:gliner2,it,hr-07,hr,local,local,1,privacy,0.8200,0,"hr:0.55, PERSON@0.68:0.60",27.0
+rules-c1:gliner2,it,hr-08,hr,local,local,1,privacy,0.5500,0,hr:0.55,25.8
+rules-c1:gliner2,it,pii-01,pii_strong,local,local,1,privacy,0.9775,0,"codice_fiscale:0.85, US_SSN@0.89:0.85",28.6
+rules-c1:gliner2,it,pii-02,pii_strong,local,local,1,privacy,0.9600,0,"iban:0.80, IBAN_CODE@1.00:0.80",31.0
+rules-c1:gliner2,it,pii-03,pii_strong,local,local,1,privacy,0.9775,0,"credit_card:0.85, CREDIT_CARD@1.00:0.85",27.6
+rules-c1:gliner2,it,pii-04,pii_strong,local,local,1,privacy,0.9775,0,"credit_card:0.85, CREDIT_CARD@1.00:0.85",29.5
+rules-c1:gliner2,it,pii-05,pii_strong,local,local,1,privacy,0.9940,0,"codice_fiscale:0.85, iban:0.80, IBAN_CODE@1.00:0.80",28.3
+rules-c1:gliner2,it,pii-06,pii_strong,local,local,1,privacy,0.9775,0,"codice_fiscale:0.85, US_SSN@0.65:0.85",28.3
+rules-c1:gliner2,it,pii-weak-01,pii_weak,sota,sota,1,privacy,0.4000,0,email:0.40,26.8
+rules-c1:gliner2,it,pii-weak-02,pii_weak,sota,local,0,privacy,0.5775,0,"italian_mobile:0.35, PHONE_NUMBER@1.00:0.35",39.8
+rules-c1:gliner2,it,pii-weak-03,pii_weak,sota,sota,1,privacy,0.4000,0,email:0.40,27.2
+rules-c1:gliner2,it,pii-weak-04,pii_weak,sota,local,0,privacy,0.5775,0,"italian_mobile:0.35, PHONE_NUMBER@1.00:0.35",27.2
+rules-c1:gliner2,it,pii-inv-01,pii_invalid,sota,local,0,privacy,0.8500,0,US_SSN@0.60:0.85,28.1
+rules-c1:gliner2,it,pii-inv-02,pii_invalid,sota,local,0,privacy,0.8500,0,CREDIT_CARD@0.99:0.85,28.8
+rules-c1:gliner2,it,pii-inv-03,pii_invalid,sota,local,0,privacy,0.8500,0,CREDIT_CARD@0.75:0.85,27.4
+rules-c1:gliner2,it,secret-01,secret,local,local,1,privacy,0.7000,0,credentials:0.70,27.6
+rules-c1:gliner2,it,secret-02,secret,local,local,1,privacy,0.9500,0,openai_key:0.95,28.2
+rules-c1:gliner2,it,secret-03,secret,local,local,1,privacy,0.9700,0,"jwt:0.90, credentials:0.70",29.2
+rules-c1:gliner2,it,secret-04,secret,local,local,1,privacy,0.9500,0,aws_access_key:0.95,26.3
+rules-c1:gliner2,it,secret-05,secret,local,local,1,privacy,0.7000,0,credentials:0.70,27.8
+rules-c1:gliner2,it,secret-06,secret,local,local,1,privacy,0.7000,0,credentials:0.70,27.5
+rules-c1:gliner2,it,secret-07,secret,local,local,1,privacy,0.7000,0,password_assignment:0.70,28.1
+rules-c1:gliner2,it,secret-08,secret,local,local,1,privacy,0.7000,0,credentials:0.70,39.4
+rules-c1:gliner2,it,combo-01,combined,local,local,1,privacy,0.9200,0,"health:0.80, PERSON@1.00:0.60",27.5
+rules-c1:gliner2,it,combo-02,combined,local,local,1,privacy,0.8000,0,"finance:0.50, PERSON@1.00:0.60",27.0
+rules-c1:gliner2,it,combo-03,combined,local,local,1,privacy,0.8000,0,"legal:0.50, PERSON@0.99:0.60",26.7
+rules-c1:gliner2,it,combo-04,combined,local,local,1,privacy,0.9200,0,"health:0.80, PERSON@1.00:0.60",27.8
+rules-c1:gliner2,it,combo-05,combined,local,local,1,privacy,0.9955,0,"codice_fiscale:0.85, health:0.80, US_SSN@0.85:0.85",30.4
+rules-c1:gliner2,it,combo-06,combined,local,local,1,privacy,0.8200,0,"hr:0.55, PERSON@1.00:0.60",30.3
+rules-c1:gliner2,it,combo-07,combined,local,local,1,privacy,0.8000,0,"finance:0.50, PERSON@0.99:0.60",30.7
+rules-c1:gliner2,it,combo-08,combined,local,local,1,privacy,0.8000,0,"legal:0.50, PERSON@0.99:0.60",31.4
+rules-c1:gliner2,it,combo-09,combined,local,local,1,privacy,0.9200,0,"health:0.80, PERSON@1.00:0.60",32.1
+rules-c1:gliner2,it,combo-10,combined,local,local,1,privacy,0.9800,0,"iban:0.80, finance:0.50, IBAN_CODE@1.00:0.80",31.2
+rules-c1:gliner2,it,edge-01,edge,sota,sota,1,privacy,0.0000,0,no-signal,28.5
+rules-c1:gliner2,it,edge-02,edge,sota,sota,1,privacy,0.0000,0,no-signal,28.1
+rules-c1:gliner2,it,edge-03,edge,sota,sota,1,privacy,0.0000,0,no-signal,40.4
+rules-c1:gliner2,it,edge-04,edge,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.5
+rules-c1:gliner2,it,edge-05,edge,sota,sota,1,privacy,0.4000,0,LOCATION@0.99:0.40,28.4
+rules-c1:gliner2,it,edge-06,edge,sota,sota,1,privacy,0.0000,0,no-signal,27.4
+rules-c1:gliner2,it,edge-07,edge,sota,local,0,privacy,0.7000,0,credentials:0.70,28.0
+rules-c1:gliner2,it,edge-08,edge,sota,sota,1,privacy,0.0000,0,no-signal,28.1
+rules-c1:gliner2,it,edge-09,edge,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.6
+rules-c1:gliner2,it,edge-10,edge,sota,sota,1,privacy,0.0000,0,no-signal,28.6
+rules-c1:gliner2,it,implicit-01,implicit,local,sota,0,privacy,0.0000,0,no-signal,27.5
+rules-c1:gliner2,it,implicit-02,implicit,local,local,1,privacy,0.6000,0,PERSON@0.64:0.60,28.2
+rules-c1:gliner2,it,implicit-03,implicit,local,local,1,privacy,0.6000,0,PERSON@0.79:0.60,28.4
+rules-c1:gliner2,it,implicit-04,implicit,local,local,1,privacy,0.6000,0,PERSON@0.67:0.60,27.1
+rules-c1:gliner2,it,implicit-05,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.0
+rules-c1:gliner2,it,implicit-06,implicit,local,sota,0,privacy,0.0000,0,no-signal,39.4
+rules-c1:gliner2,it,implicit-07,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.6
+rules-c1:gliner2,it,implicit-08,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.7
+rules-c1:gliner2,it,implicit-09,implicit,local,local,1,privacy,0.6000,0,PERSON@0.73:0.60,29.5
+rules-c1:gliner2,it,implicit-10,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.2
+rules-c1:gliner2,it,implicit-11,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.1
+rules-c1:gliner2,it,implicit-12,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.0
+rules-c1:gliner2,it,implicit-13,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.2
+rules-c1:gliner2,it,implicit-14,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.0
+rules-c1:gliner2,it,implicit-15,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.4
+rules-c1:gliner2,it,implicit-benign-01,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,27.5
+rules-c1:gliner2,it,implicit-benign-02,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.7
+rules-c1:gliner2,it,implicit-benign-03,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,29.1
+rules-c1:gliner2,it,implicit-benign-04,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,40.6
+rules-c1:gliner2,it,implicit-benign-05,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,33.2
+rules-c1:gliner2,it,benign-23,benign,sota,sota,1,privacy,0.0000,0,no-signal,30.3
+rules-c1:gliner2,it,benign-24,benign,sota,sota,1,privacy,0.0000,0,no-signal,28.9
+rules-c1:gliner2,it,benign-25,benign,sota,sota,1,privacy,0.0000,0,no-signal,28.7
+rules-c1:gliner2,it,benign-26,benign,sota,sota,1,privacy,0.0000,0,no-signal,25.5
+rules-c1:gliner2,it,benign-27,benign,sota,sota,1,privacy,0.0000,0,no-signal,26.4
+rules-c1:gliner2,it,benign-28,benign,sota,sota,1,privacy,0.0000,0,no-signal,29.4
+rules-c1:gliner2,it,benign-29,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.1
+rules-c1:gliner2,it,benign-30,benign,sota,sota,1,privacy,0.0000,0,no-signal,28.9
+rules-c1:gliner2,it,benign-31,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.9
+rules-c1:gliner2,it,benign-32,benign,sota,local,0,privacy,0.7000,0,credentials:0.70,28.6
+rules-c1:gliner2,it,benign-33,benign,sota,local,0,privacy,0.6000,0,PERSON@0.67:0.60,27.0
+rules-c1:gliner2,it,benign-34,benign,sota,sota,1,privacy,0.0000,0,no-signal,40.4
+rules-c1:gliner2,it,benign-35,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.8
+rules-c1:gliner2,it,benign-36,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.2
+rules-c1:gliner2,it,benign-37,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.5
+rules-c1:gliner2,it,benign-38,benign,sota,sota,1,privacy,0.0000,0,no-signal,29.1
+rules-c1:gliner2,it,benign-39,benign,sota,sota,1,privacy,0.0000,0,no-signal,28.4
+rules-c1:gliner2,it,benign-40,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.1
+rules-c1:gliner2,it,benign-41,benign,sota,sota,1,privacy,0.0000,0,no-signal,28.5
+rules-c1:gliner2,it,benign-42,benign,sota,sota,1,privacy,0.0000,0,no-signal,29.2
+rules-c1:gliner2,it,benign-43,benign,sota,sota,1,privacy,0.0000,0,no-signal,28.2
+rules-c1:gliner2,it,benign-44,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.8
+rules-c1:gliner2,it,benign-45,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.6
+rules-c1:gliner2,it,benign-46,benign,sota,sota,1,privacy,0.0000,0,no-signal,29.9
+rules-c1:gliner2,it,benign-47,benign,sota,sota,1,privacy,0.0000,0,no-signal,41.5
+rules-c1:gliner2,it,benign-48,benign,sota,sota,1,privacy,0.0000,0,no-signal,29.5
+rules-c1:gliner2,it,benign-49,benign,sota,sota,1,privacy,0.0000,0,no-signal,28.9
+rules-c1:gliner2,it,benign-50,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.6
+rules-c1:gliner2,it,benign-51,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.2
+rules-c1:gliner2,it,benign-52,benign,sota,sota,1,privacy,0.0000,0,no-signal,26.7
+rules-c1:gliner2,it,benign-53,benign,sota,sota,1,privacy,0.0000,0,no-signal,26.5
+rules-c1:gliner2,it,benign-54,benign,sota,sota,1,privacy,0.0000,0,no-signal,26.7
+rules-c1:gliner2,it,benign-55,benign,sota,sota,1,privacy,0.0000,0,no-signal,27.1
+rules-c1:gliner2,it,person-16,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.5
+rules-c1:gliner2,it,person-17,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.0
+rules-c1:gliner2,it,person-18,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.6
+rules-c1:gliner2,it,person-19,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.8
+rules-c1:gliner2,it,person-20,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,39.8
+rules-c1:gliner2,it,person-21,person,local,local,1,privacy,0.6000,0,PERSON@0.99:0.60,29.2
+rules-c1:gliner2,it,person-22,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.5
+rules-c1:gliner2,it,person-23,person,local,local,1,privacy,0.6000,0,PERSON@0.98:0.60,29.8
+rules-c1:gliner2,it,person-24,person,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,28.4
+rules-c1:gliner2,it,location-09,location,sota,sota,1,privacy,0.4000,0,LOCATION@0.92:0.40,27.7
+rules-c1:gliner2,it,location-10,location,sota,sota,1,privacy,0.4000,0,LOCATION@0.79:0.40,27.9
+rules-c1:gliner2,it,location-11,location,sota,sota,1,privacy,0.4000,0,LOCATION@1.00:0.40,28.1
+rules-c1:gliner2,it,location-12,location,sota,sota,1,privacy,0.4000,0,LOCATION@0.99:0.40,27.9
+rules-c1:gliner2,it,location-13,location,sota,sota,1,privacy,0.4000,0,LOCATION@0.99:0.40,28.2
+rules-c1:gliner2,it,location-14,location,sota,sota,1,privacy,0.4000,0,LOCATION@0.99:0.40,26.7
+rules-c1:gliner2,it,health-16,health,local,local,1,privacy,0.9200,0,"health:0.80, PERSON@0.66:0.60",27.2
+rules-c1:gliner2,it,health-17,health,local,local,1,privacy,0.8000,0,health:0.80,28.1
+rules-c1:gliner2,it,health-18,health,local,sota,0,privacy,0.0000,0,no-signal,40.4
+rules-c1:gliner2,it,health-19,health,local,local,1,privacy,0.8000,0,health:0.80,29.6
+rules-c1:gliner2,it,health-20,health,local,local,1,privacy,0.8000,0,health:0.80,27.6
+rules-c1:gliner2,it,health-21,health,local,sota,0,privacy,0.0000,0,no-signal,26.7
+rules-c1:gliner2,it,health-22,health,local,local,1,privacy,0.8000,0,health:0.80,28.2
+rules-c1:gliner2,it,finance-11,finance,local,local,1,privacy,0.5000,0,finance:0.50,28.6
+rules-c1:gliner2,it,finance-12,finance,local,sota,0,privacy,0.0000,0,no-signal,26.4
+rules-c1:gliner2,it,finance-13,finance,local,local,1,privacy,0.5000,0,finance:0.50,27.5
+rules-c1:gliner2,it,finance-14,finance,local,sota,0,privacy,0.0000,0,no-signal,26.5
+rules-c1:gliner2,it,finance-15,finance,local,local,1,privacy,0.5000,0,finance:0.50,27.1
+rules-c1:gliner2,it,finance-16,finance,local,sota,0,privacy,0.0000,0,no-signal,25.8
+rules-c1:gliner2,it,legal-10,legal,local,sota,0,privacy,0.0000,0,no-signal,27.1
+rules-c1:gliner2,it,legal-11,legal,local,sota,0,privacy,0.0000,0,no-signal,26.4
+rules-c1:gliner2,it,legal-12,legal,local,local,1,privacy,0.5000,0,legal:0.50,38.3
+rules-c1:gliner2,it,legal-13,legal,local,local,1,privacy,0.6000,0,PERSON@0.72:0.60,28.5
+rules-c1:gliner2,it,legal-14,legal,local,sota,0,privacy,0.0000,0,no-signal,27.8
+rules-c1:gliner2,it,legal-15,legal,local,local,1,privacy,0.6000,0,PERSON@0.68:0.60,27.5
+rules-c1:gliner2,it,hr-09,hr,sota,sota,1,privacy,0.0000,0,no-signal,28.5
+rules-c1:gliner2,it,hr-10,hr,sota,sota,1,privacy,0.0000,0,no-signal,28.8
+rules-c1:gliner2,it,hr-11,hr,sota,sota,1,privacy,0.0000,0,no-signal,27.1
+rules-c1:gliner2,it,hr-12,hr,sota,sota,1,privacy,0.0000,0,no-signal,29.8
+rules-c1:gliner2,it,hr-13,hr,local,local,1,privacy,0.6000,0,PERSON@0.64:0.60,28.7
+rules-c1:gliner2,it,hr-14,hr,local,sota,0,privacy,0.0000,0,no-signal,28.6
+rules-c1:gliner2,it,hr-15,hr,local,sota,0,privacy,0.0000,0,no-signal,28.3
+rules-c1:gliner2,it,hr-16,hr,local,sota,0,privacy,0.0000,0,no-signal,28.3
+rules-c1:gliner2,it,pii-07,pii_strong,local,local,1,privacy,0.9775,0,"codice_fiscale:0.85, US_SSN@0.89:0.85",29.0
+rules-c1:gliner2,it,pii-08,pii_strong,local,local,1,privacy,0.9600,0,"iban:0.80, IBAN_CODE@1.00:0.80",42.3
+rules-c1:gliner2,it,pii-09,pii_strong,local,local,1,privacy,0.9775,0,"credit_card:0.85, CREDIT_CARD@1.00:0.85",29.6
+rules-c1:gliner2,it,pii-10,pii_strong,local,local,1,privacy,0.9775,0,"codice_fiscale:0.85, US_SSN@0.86:0.85",29.2
+rules-c1:gliner2,it,pii-11,pii_strong,local,local,1,privacy,0.9600,0,"iban:0.80, IBAN_CODE@1.00:0.80",29.0
+rules-c1:gliner2,it,pii-12,pii_strong,local,local,1,privacy,0.9775,0,"credit_card:0.85, CREDIT_CARD@1.00:0.85",28.1
+rules-c1:gliner2,it,pii-weak-05,pii_weak,sota,sota,1,privacy,0.4000,0,email:0.40,28.6
+rules-c1:gliner2,it,pii-weak-06,pii_weak,sota,sota,1,privacy,0.3500,0,PHONE_NUMBER@1.00:0.35,28.2
+rules-c1:gliner2,it,pii-weak-07,pii_weak,sota,sota,1,privacy,0.4000,0,email:0.40,29.0
+rules-c1:gliner2,it,pii-weak-08,pii_weak,sota,sota,1,privacy,0.3500,0,PHONE_NUMBER@1.00:0.35,28.1
+rules-c1:gliner2,it,pii-inv-04,pii_invalid,sota,local,0,privacy,0.8500,0,CREDIT_CARD@1.00:0.85,27.2
+rules-c1:gliner2,it,pii-inv-05,pii_invalid,sota,local,0,privacy,0.8000,0,IBAN_CODE@0.99:0.80,28.5
+rules-c1:gliner2,it,pii-inv-06,pii_invalid,sota,sota,1,privacy,0.0000,0,no-signal,29.2
+rules-c1:gliner2,it,secret-09,secret,local,sota,0,privacy,0.0000,0,no-signal,29.5
+rules-c1:gliner2,it,secret-10,secret,local,local,1,privacy,0.7000,0,credentials:0.70,40.8
+rules-c1:gliner2,it,secret-11,secret,local,sota,0,privacy,0.0000,0,no-signal,29.1
+rules-c1:gliner2,it,secret-12,secret,local,local,1,privacy,0.8000,0,IBAN_CODE@0.60:0.80,28.2
+rules-c1:gliner2,it,secret-13,secret,local,local,1,privacy,0.9850,0,"private_key_header:0.95, credentials:0.70",29.5
+rules-c1:gliner2,it,secret-14,secret,local,local,1,privacy,0.7000,0,credentials:0.70,29.0
+rules-c1:gliner2,it,combo-11,combined,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,27.2
+rules-c1:gliner2,it,combo-12,combined,local,local,1,privacy,0.9200,0,"health:0.80, PERSON@1.00:0.60",27.0
+rules-c1:gliner2,it,combo-13,combined,local,local,1,privacy,0.9920,0,"iban:0.80, finance:0.50, PERSON@1.00:0.60, IBAN_CODE@1.00:0.80",28.4
+rules-c1:gliner2,it,combo-14,combined,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,29.3
+rules-c1:gliner2,it,combo-15,combined,local,local,1,privacy,0.6000,0,PERSON@0.99:0.60,29.1
+rules-c1:gliner2,it,combo-16,combined,local,local,1,privacy,0.9775,0,"codice_fiscale:0.85, US_SSN@0.80:0.85",28.6
+rules-c1:gliner2,it,edge-11,edge,sota,sota,1,privacy,0.0000,0,no-signal,27.4
+rules-c1:gliner2,it,edge-12,edge,sota,sota,1,privacy,0.0000,0,no-signal,26.9
+rules-c1:gliner2,it,edge-13,edge,local,local,1,privacy,0.6000,0,PERSON@1.00:0.60,40.8
+rules-c1:gliner2,it,edge-14,edge,sota,sota,1,privacy,0.0000,0,no-signal,28.2
+rules-c1:gliner2,it,implicit-16,implicit,local,local,1,privacy,0.6000,0,PERSON@0.92:0.60,27.1
+rules-c1:gliner2,it,implicit-17,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.8
+rules-c1:gliner2,it,implicit-18,implicit,local,sota,0,privacy,0.0000,0,no-signal,30.1
+rules-c1:gliner2,it,implicit-19,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.7
+rules-c1:gliner2,it,implicit-20,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.6
+rules-c1:gliner2,it,implicit-21,implicit,local,local,1,privacy,0.6000,0,PERSON@0.71:0.60,29.5
+rules-c1:gliner2,it,implicit-22,implicit,local,sota,0,privacy,0.0000,0,no-signal,31.3
+rules-c1:gliner2,it,implicit-23,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.9
+rules-c1:gliner2,it,implicit-24,implicit,local,sota,0,privacy,0.0000,0,no-signal,30.1
+rules-c1:gliner2,it,implicit-25,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.0
+rules-c1:gliner2,it,implicit-26,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.3
+rules-c1:gliner2,it,implicit-27,implicit,local,sota,0,privacy,0.0000,0,no-signal,40.0
+rules-c1:gliner2,it,implicit-28,implicit,local,sota,0,privacy,0.0000,0,no-signal,27.0
+rules-c1:gliner2,it,implicit-29,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.0
+rules-c1:gliner2,it,implicit-30,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.3
+rules-c1:gliner2,it,implicit-31,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.1
+rules-c1:gliner2,it,implicit-32,implicit,local,sota,0,privacy,0.0000,0,no-signal,27.8
+rules-c1:gliner2,it,implicit-33,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.1
+rules-c1:gliner2,it,implicit-34,implicit,local,sota,0,privacy,0.0000,0,no-signal,26.7
+rules-c1:gliner2,it,implicit-35,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.8
+rules-c1:gliner2,it,implicit-36,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.9
+rules-c1:gliner2,it,implicit-37,implicit,local,local,1,privacy,0.6000,0,PERSON@0.71:0.60,28.7
+rules-c1:gliner2,it,implicit-38,implicit,local,sota,0,privacy,0.0000,0,no-signal,27.1
+rules-c1:gliner2,it,implicit-39,implicit,local,local,1,privacy,0.6000,0,PERSON@0.83:0.60,29.4
+rules-c1:gliner2,it,implicit-40,implicit,local,sota,0,privacy,0.0000,0,no-signal,40.7
+rules-c1:gliner2,it,implicit-41,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.0
+rules-c1:gliner2,it,implicit-42,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.4
+rules-c1:gliner2,it,implicit-43,implicit,local,sota,0,privacy,0.0000,0,no-signal,27.8
+rules-c1:gliner2,it,implicit-44,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.0
+rules-c1:gliner2,it,implicit-45,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.3
+rules-c1:gliner2,it,implicit-46,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.8
+rules-c1:gliner2,it,implicit-47,implicit,local,local,1,privacy,0.6000,0,PERSON@0.61:0.60,29.1
+rules-c1:gliner2,it,implicit-48,implicit,local,sota,0,privacy,0.0000,0,no-signal,27.2
+rules-c1:gliner2,it,implicit-49,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.5
+rules-c1:gliner2,it,implicit-50,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.3
+rules-c1:gliner2,it,implicit-51,implicit,local,local,1,privacy,0.6000,0,PERSON@0.63:0.60,28.3
+rules-c1:gliner2,it,implicit-52,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.5
+rules-c1:gliner2,it,implicit-53,implicit,local,sota,0,privacy,0.0000,0,no-signal,42.0
+rules-c1:gliner2,it,implicit-54,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.0
+rules-c1:gliner2,it,implicit-55,implicit,local,sota,0,privacy,0.0000,0,no-signal,30.1
+rules-c1:gliner2,it,implicit-56,implicit,local,sota,0,privacy,0.0000,0,no-signal,29.2
+rules-c1:gliner2,it,implicit-57,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.9
+rules-c1:gliner2,it,implicit-58,implicit,local,sota,0,privacy,0.0000,0,no-signal,28.0
+rules-c1:gliner2,it,implicit-59,implicit,local,sota,0,privacy,0.0000,0,no-signal,27.7
+rules-c1:gliner2,it,implicit-60,implicit,local,sota,0,privacy,0.0000,0,no-signal,27.3
+rules-c1:gliner2,it,implicit-benign-06,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.3
+rules-c1:gliner2,it,implicit-benign-07,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.2
+rules-c1:gliner2,it,implicit-benign-08,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.9
+rules-c1:gliner2,it,implicit-benign-09,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,29.2
+rules-c1:gliner2,it,implicit-benign-10,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.3
+rules-c1:gliner2,it,implicit-benign-11,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,40.1
+rules-c1:gliner2,it,implicit-benign-12,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.0
+rules-c1:gliner2,it,implicit-benign-13,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.6
+rules-c1:gliner2,it,implicit-benign-14,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,29.1
+rules-c1:gliner2,it,implicit-benign-15,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,27.4
+rules-c1:gliner2,it,implicit-benign-16,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,27.7
+rules-c1:gliner2,it,implicit-benign-17,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,29.2
+rules-c1:gliner2,it,implicit-benign-18,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.9
+rules-c1:gliner2,it,implicit-benign-19,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.7
+rules-c1:gliner2,it,implicit-benign-20,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,29.0
+rules-c1:gliner2,it,implicit-benign-21,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,27.1
+rules-c1:gliner2,it,implicit-benign-22,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,27.4
+rules-c1:gliner2,it,implicit-benign-23,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.4
+rules-c1:gliner2,it,implicit-benign-24,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,41.1
+rules-c1:gliner2,it,implicit-benign-25,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,27.7
+rules-c1:gliner2,it,implicit-benign-26,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.0
+rules-c1:gliner2,it,implicit-benign-27,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,29.2
+rules-c1:gliner2,it,implicit-benign-28,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.9
+rules-c1:gliner2,it,implicit-benign-29,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,27.6
+rules-c1:gliner2,it,implicit-benign-30,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,27.6
+rules-c1:gliner2,it,implicit-benign-31,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,31.5
+rules-c1:gliner2,it,implicit-benign-32,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.1
+rules-c1:gliner2,it,implicit-benign-33,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,29.1
+rules-c1:gliner2,it,implicit-benign-34,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,26.9
+rules-c1:gliner2,it,implicit-benign-35,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,27.6
+rules-c1:gliner2,it,implicit-benign-36,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,27.7
+rules-c1:gliner2,it,implicit-benign-37,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,38.9
+rules-c1:gliner2,it,implicit-benign-38,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,26.4
+rules-c1:gliner2,it,implicit-benign-39,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,28.8
+rules-c1:gliner2,it,implicit-benign-40,implicit_benign,sota,sota,1,privacy,0.0000,0,no-signal,27.8
